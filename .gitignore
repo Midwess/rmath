@@ -1,9 +1,9 @@
 /target
 .DS_Store
 
-# Local Symbolica clone: source-available license forbids redistribution (see .dev/adr/0001).
-.dev/symbolica/
-.dev/test
+# Planning workspace (specs, ADRs, local Symbolica clone). Kept out of version control;
+# the Symbolica clone in particular must never be published (source-available license).
+.dev/
 
 # CI fixture crates resolve their own dependencies; keep their lockfiles and build dirs out.
 tests/fixtures/*/Cargo.lock

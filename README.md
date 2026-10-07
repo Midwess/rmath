@@ -235,5 +235,8 @@ RUST_TEST_THREADS = "1"
 
 rmath is a thin layer over Symbolica's public API and must stay that way: it never
 re-implements computer-algebra functionality, and Symbolica's source is never consulted
-(its license forbids using it as a development reference). See the architecture decision
-records under `.dev/adr/`.
+(its license forbids using it as a development reference). Develop against
+[docs.rs/symbolica](https://docs.rs/symbolica) only.
+
+Tests must run single-threaded without a Symbolica license key; the repository's
+`.cargo/config.toml` sets `RUST_TEST_THREADS=1`, so a plain `cargo test` works.
