@@ -86,3 +86,25 @@ macro_rules! find {
         $crate::__private::__find! { $crate ; $($t)* }
     };
 }
+
+/// Solve a system of equations written with `==`.
+///
+/// ```
+/// use rmath::prelude::*;
+///
+/// symbols!(x, y);
+/// let sols = solve!([2 * x + y == 3, x - y == 0] for x, y).unwrap();
+/// assert_eq!(sols[0].value(x), Some(&expr!(1)));
+/// assert_eq!(sols[0].value(y), Some(&expr!(1)));
+/// ```
+///
+/// Each `lhs == rhs` is passed to Symbolica as `lhs - rhs`; the result is Symbolica's own
+/// `Result<SolutionSet, SolveError>`. An optional domain clause restricts the unknowns:
+/// `solve!([x^2 + 1 == 0] for x over Reals)` (`Complexes` is the default; also `Rationals`,
+/// `Integers`). `value(symbol)` on a solution branch comes from [`SolutionExt`](crate::SolutionExt).
+#[macro_export]
+macro_rules! solve {
+    ($($t:tt)*) => {
+        $crate::__private::__solve! { $crate ; $($t)* }
+    };
+}

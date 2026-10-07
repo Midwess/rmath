@@ -1,6 +1,6 @@
 # Tasks: rmath-v1-math-macros
 
-## Progress: [21/35]
+## Progress: [24/35]
 
 Every "verify" task records its result in the API Verification Log in `blueprint.md` before
 dependent tasks start. All Symbolica facts come from docs.rs only (ADR-0001).
@@ -74,12 +74,12 @@ dependent tasks start. All Symbolica facts come from docs.rs only (ADR-0001).
       (`PolyVariable` from `Symbol`).
 - [x] 3.2 `parse/solve.rs`: `[eq, …]` list, `lhs == rhs` required, `for vars`, optional
       `over Domain` (Complexes/Reals/Rationals/Integers). Unit tests incl. `=` vs `==`.
-- [ ] 3.3 `src/solve.rs` + `expand/solve.rs` + shim: each equation lowered to `sub(lhs, rhs)`;
+- [x] 3.3 `src/solve.rs` + `expand/solve.rs` + shim: each equation lowered to `sub(lhs, rhs)`;
       domain emitted as `SolveDomain::#ident` at the user's span.
-- [ ] 3.4 Tests: 2×2 linear system, `over Reals` on `x^2 + 1 == 0` is empty, inconsistent
+- [x] 3.4 Tests: 2×2 linear system, `over Reals` on `x^2 + 1 == 0` is empty, inconsistent
       system → `Err`, spliced `f64` coefficient. trybuild: missing `for`, `=` instead of `==`,
       bare expression without `==`, unknown domain.
-- [ ] 3.5 Docs; optional convenience accessor only if 3.1 found a clean `Solution` API.
+- [x] 3.5 Docs; optional convenience accessor only if 3.1 found a clean `Solution` API.
 
 ## 4. `func!`
 

@@ -1,0 +1,7 @@
+error: `=` is not an operator
+
+       help: write the equation as `lhs == rhs`
+ --> tests/ui/solve_single_equals.rs:5:23
+  |
+5 |     let _ = solve!([x = 1] for x);
+  |                       ^

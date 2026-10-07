@@ -6,8 +6,9 @@ use symbolica::{atom::AtomCore, domains::integer::Integer, id::Pattern};
 use crate::{Callable, IntoExpr};
 
 pub use crate::rule::{Rule, find_all, guard};
-pub use rmath_macros::{__expr, __find, __rule, __symbols};
-pub use symbolica::{atom::Atom, id::Replacement, symbol};
+pub use crate::solve::solve;
+pub use rmath_macros::{__expr, __find, __rule, __solve, __symbols};
+pub use symbolica::{atom::Atom, id::Replacement, solve::SolveDomain, symbol};
 
 pub fn into_expr<T: IntoExpr + ?Sized>(value: &T) -> Atom {
     value.to_expr()

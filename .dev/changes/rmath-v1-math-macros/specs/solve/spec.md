@@ -44,7 +44,13 @@ for the listed unknowns, in the listed order.
 
 Equations SHALL accept splices exactly as `expr!` does.
 
-#### Scenario: Measured values spliced in
+#### Scenario: Exact values spliced in
 
-- WHEN the user writes `solve!([k * x == m] for x)` with `m: f64`
-- THEN the result assigns `x = m / k` with `m` substituted
+- WHEN the user writes `solve!([k * x == m] for x)` with `k: i32` and `m: Rational`
+- THEN the result assigns `x = m / k` with both values substituted
+
+#### Scenario: Inexact values are rejected by the solver
+
+- WHEN the user writes `solve!([2 * x == m] for x)` with `m: f64`
+- THEN the macro returns `Err(SolveError::UnsupportedProblem(..))`, because Symbolica's exact
+  solver requires exact coefficients (this is Symbolica's behaviour, passed through unchanged)

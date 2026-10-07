@@ -1,0 +1,7 @@
+error: expected `for` followed by the unknowns
+
+       help: write `solve!([equations] for x, y)`
+ --> tests/ui/solve_missing_for.rs:5:20
+  |
+5 |     let _ = solve!([x == 1]);
+  |                    ^^^^^^^^

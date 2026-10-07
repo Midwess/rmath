@@ -1,0 +1,7 @@
+error: unknown domain `Quaternions`
+
+       help: supported domains: Complexes, Reals, Rationals, Integers
+ --> tests/ui/solve_unknown_domain.rs:5:40
+  |
+5 |     let _ = solve!([x == 1] for x over Quaternions);
+  |                                        ^^^^^^^^^^^

@@ -157,10 +157,31 @@ pairs.sort();
 assert_eq!(pairs, ["1=2", "x=y"]);
 ```
 
+### `solve!`
+
+```rust
+use rmath::prelude::*;
+
+symbols!(x, y);
+
+let sols = solve!([2 * x + y == 3, x - y == 0] for x, y).unwrap();
+assert_eq!(sols[0].value(x), Some(&expr!(1)));
+assert_eq!(sols[0].value(y), Some(&expr!(1)));
+
+// Restrict the unknowns to a domain: Complexes (default), Reals, Rationals, Integers.
+let none = solve!([x ^ 2 + 1 == 0] for x over Reals).unwrap();
+assert!(none.is_empty().unwrap());
+```
+
+Each `lhs == rhs` becomes `lhs - rhs` for Symbolica's exact solver; the result is Symbolica's
+`Result<SolutionSet, SolveError>` untouched, and `value(symbol)` on a branch comes from the
+`SolutionExt` trait in the prelude. Coefficients must be exact: a spliced `f64` makes the
+solver return `Err(SolveError::UnsupportedProblem(..))`, so splice a `Rational` (or an
+integer) instead.
+
 ## Roadmap
 
-Planned for v0.1: `solve!` (equation systems) and `func!` (compile an expression to a fast
-`f64` closure).
+Planned for v0.1: `func!` (compile an expression to a fast `f64` closure).
 
 ## Licensing
 

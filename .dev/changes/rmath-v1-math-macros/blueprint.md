@@ -234,6 +234,8 @@ Verified on docs.rs/symbolica 3.0.1 during planning (2026-10-07):
 
 | 3.1: `SolveBuilder::wrt<V: AtomCore>(&self, &[V])` (pass `&[Atom]`), `.over(SolveDomain)` default `Complexes`; `Solution::{get(&PolyVariable) -> Option<&Atom>, coordinates() -> &[(PolyVariable, Atom)], free_variables(), conditions(), is_point(), as_point_dict()}`; `PolyVariable::{Symbol, Function, Power}`, `From<Symbol>`, `to_atom()` | ✅ |
 
+| Empirical (3.4): `Atom::solve` with a float coefficient returns `Err(SolveError::UnsupportedProblem("Solve requires exact characteristic-zero coefficients; convert inexact input explicitly"))`. The solve spec's "measured `f64` value" scenario was rewritten to use a `Rational`, and the `Err` is pinned by a test. | ✅ (spec adjusted) |
+
 Still to verify: conflicting re-declaration behaviour (undocumented → empirical test, deferred) ·
 `MatchStackFn` signature and binding access · `Match` → `Atom` for `a__`/`a___` ·
 `PatternAtomTreeIterator::Item` · `wrt` element type · `Solution` accessors · user-defined

@@ -1,0 +1,7 @@
+error: expected `lhs == rhs`
+
+       help: every equation is written `lhs == rhs`; an expression alone is not accepted
+ --> tests/ui/solve_bare_expression.rs:5:29
+  |
+5 |     let _ = solve!([x ^ 2 - 1] for x);
+  |                             ^

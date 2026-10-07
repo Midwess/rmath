@@ -1,7 +1,9 @@
 //! Everything needed to write math with rmath: the macros, Symbolica's core types, the
 //! built-in functions and constants, and rmath's traits.
 
-pub use crate::{ApplyRule, Callable, IntoExpr, Rule, expr, find, rule, symbols};
+pub use crate::{
+    ApplyRule, Callable, IntoExpr, Rule, SolutionExt, expr, find, rule, solve, symbols,
+};
 pub use symbolica::atom::{Atom, AtomCore, Symbol};
 
 /// The imaginary unit. Spliced into expressions as Symbolica's `𝑖`.
