@@ -6,8 +6,9 @@ use proc_macro2::{Spacing, Span, TokenStream, TokenTree};
 pub struct Cursor {
     toks: Vec<TokenTree>,
     pos: usize,
-    /// Span of the most recently consumed token; anchors "unexpected end of input" errors.
-    last: Option<Span>,
+    /// The most recently consumed token; anchors "unexpected end of input" errors and names
+    /// the left neighbour in "insert `*` between ..." help.
+    last: Option<TokenTree>,
 }
 
 impl Cursor {
@@ -24,19 +25,29 @@ impl Cursor {
         self.toks.get(self.pos)
     }
 
+    /// Look `n` tokens ahead without consuming (`peek_nth(0)` is `peek`).
+    pub fn peek_nth(&self, n: usize) -> Option<&TokenTree> {
+        self.toks.get(self.pos + n)
+    }
+
     /// Consume and return the next token.
     pub fn bump(&mut self) -> Option<TokenTree> {
         let tok = self.toks.get(self.pos).cloned();
-        if let Some(t) = &tok {
-            self.last = Some(t.span());
+        if tok.is_some() {
+            self.last = tok.clone();
             self.pos += 1;
         }
         tok
     }
 
+    /// The most recently consumed token, if any.
+    pub fn last_token(&self) -> Option<&TokenTree> {
+        self.last.as_ref()
+    }
+
     /// Span of the most recently consumed token, if any.
     pub fn last_span(&self) -> Option<Span> {
-        self.last
+        self.last.as_ref().map(TokenTree::span)
     }
 
     /// Does the upcoming punctuation spell `op` exactly?
