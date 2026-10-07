@@ -1,6 +1,6 @@
 # Tasks: rmath-v1-math-macros
 
-## Progress: [4/35]
+## Progress: [5/35]
 
 Every "verify" task records its result in the API Verification Log in `blueprint.md` before
 dependent tasks start. All Symbolica facts come from docs.rs only (ADR-0001).
@@ -22,7 +22,7 @@ dependent tasks start. All Symbolica facts come from docs.rs only (ADR-0001).
       empirical tests in 1.9. Results logged in blueprint.md.)*
 - [x] 1.4 `parse/cursor.rs` + `parse/error.rs` (SpanRange, Error, Errors, compile_error
       emission) with unit tests, including joint-punct detection for `==`, `=>`, `||`.
-- [ ] 1.5 `parse/lit.rs`: classify integer/float/suffixed literals. Tests: `1_000`, `0x1F`,
+- [x] 1.5 `parse/lit.rs`: classify integer/float/suffixed literals. Tests: `1_000`, `0x1F`,
       `2i8`, `0.5`, `2x` (implicit-mult error), value beyond `i128` (error).
 - [ ] 1.6 `parse/ast.rs` + `parse/expr.rs` Pratt parser. Precedence tests: `-x^2`, `2^3^2`,
       `2^-x*3`, `x^-1`, `n!^2`, `-n!`, `(a+b)*c`. Error tests: `2x`, `x y`, `2(x)`, `f!(x)`,
