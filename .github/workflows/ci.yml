@@ -1,0 +1,80 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+env:
+  CARGO_TERM_COLOR: always
+  # Unlicensed Symbolica is single-core and aborts under concurrent use.
+  RUST_TEST_THREADS: "1"
+
+jobs:
+  test:
+    name: test (${{ matrix.toolchain }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # 1.96.0 is the MSRV; 1.97.0 is the toolchain the trybuild snapshots were taken with.
+        toolchain: ["1.96.0", "1.97.0"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ matrix.toolchain }}
+      - name: Install GMP and MPFR
+        run: sudo apt-get update && sudo apt-get install -y libgmp-dev libmpfr-dev m4
+      - uses: Swatinem/rust-cache@v2
+      - name: Unit, integration and doc tests
+        run: |
+          cargo test --lib
+          cargo test --doc
+          for t in expr_smoke expr_equiv symbols rule find solve func; do
+            cargo test --test "$t"
+          done
+      - name: Compile-fail snapshots (pinned toolchain only)
+        if: matrix.toolchain == '1.97.0'
+        run: cargo test --test ui
+
+  lint:
+    name: fmt + clippy + docs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+      - name: Install GMP and MPFR
+        run: sudo apt-get update && sudo apt-get install -y libgmp-dev libmpfr-dev m4
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo fmt --all --check
+      - run: cargo clippy --all-targets -- -D warnings
+      - run: cargo doc --no-deps
+        env:
+          RUSTDOCFLAGS: -D warnings
+
+  pure-rust:
+    name: pure-rust backends
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - name: Build and test without GMP
+        run: |
+          cargo build --no-default-features --features pure-rust
+          cargo test --no-default-features --features pure-rust --test expr_equiv
+
+  renamed-dependency:
+    name: renamed dependency fixture
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Install GMP and MPFR
+        run: sudo apt-get update && sudo apt-get install -y libgmp-dev libmpfr-dev m4
+      - uses: Swatinem/rust-cache@v2
+      - name: Build and run a crate that depends on rmath under another name
+        run: cargo run --manifest-path tests/fixtures/renamed/Cargo.toml

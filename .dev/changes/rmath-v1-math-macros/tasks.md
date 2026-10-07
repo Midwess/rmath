@@ -1,6 +1,6 @@
 # Tasks: rmath-v1-math-macros
 
-## Progress: [28/35]
+## Progress: [31/35]
 
 Every "verify" task records its result in the API Verification Log in `blueprint.md` before
 dependent tasks start. All Symbolica facts come from docs.rs only (ADR-0001).
@@ -97,12 +97,12 @@ dependent tasks start. All Symbolica facts come from docs.rs only (ADR-0001).
 
 ## 5. Release readiness
 
-- [ ] 5.1 CI workflow: fmt, clippy `-D warnings`, test on 1.96 and stable, trybuild on the
+- [x] 5.1 CI workflow: fmt, clippy `-D warnings`, test on 1.96 and stable, trybuild on the
       pinned toolchain, build with `--no-default-features --features pure-rust`, fixture crate
       depending on rmath under a renamed package.
-- [ ] 5.2 `cargo doc --no-deps` clean (no broken intra-doc links); `cargo publish --dry-run`
+- [x] 5.2 `cargo doc --no-deps` clean (no broken intra-doc links); `cargo publish --dry-run`
       for both crates.
-- [ ] 5.3 Update `CONTEXT.md`, `.dev/project.md`, ADR links in README "Contributing".
+- [x] 5.3 Update `CONTEXT.md`, `.dev/project.md`, ADR links in README "Contributing".
 - [ ] 5.4 Owner review of the public API surface against `design.md` "API Changes".
 - [ ] 5.5 Archive the change (`/dev-workflow:archive`), merging delta specs into `.dev/specs/`.
 
@@ -138,3 +138,11 @@ Implementation notes, timings and verification results are appended here during 
 - **1.13** Compile-time cost: `examples/large_expr.rs` (200 terms, 5.4 KB of `expr!`) rebuilds
   incrementally in 0.44 s on stable 1.97 (a 1-term example measured 0.84 s), so macro expansion
   is negligible. The example is kept as a compile-time smoke test; it is not packaged.
+- **5.2** `cargo doc --no-deps` is clean with `RUSTDOCFLAGS=-D warnings`. `cargo package
+  -p rmath-macros` succeeds (verify build included). `cargo package -p rmath` cannot succeed
+  until `rmath-macros` is on crates.io ("no matching package named `rmath-macros` found"):
+  publish order is rmath-macros first, then rmath. The manifest warning "no documentation,
+  homepage or repository" goes away once the owner adds `repository`.
+- **5.1** CI: tests on 1.96.0 (MSRV) and 1.97.0 (trybuild snapshots pinned to it), fmt +
+  clippy -D warnings + rustdoc -D warnings, pure-rust build/test, and the renamed-dependency
+  fixture (`tests/fixtures/renamed`, verified locally: all six macros work as `rm::…`).

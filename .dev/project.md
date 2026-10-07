@@ -7,9 +7,11 @@
 expressions such as `expr!(x^2 + sin(y)/2)` directly in Rust source. The macros parse them at
 compile time and expand into calls on Symbolica's public API.
 
-**Current state:** an unmodified `cargo new --lib` stub (`src/lib.rs` holds only the template
-`add` function and one test). No dependencies, modules or commits yet. Design is in progress
-(brainstorming phase).
+**Current state (2026-10-07):** v1 implemented on branch `feat/rmath-v1-math-macros`: all six
+macros (`symbols!`, `expr!`, `rule!`, `find!`, `solve!`, `func!`) with unit, integration,
+equivalence, doctest and trybuild coverage; CI workflow and renamed-dependency fixture in
+place. Open before release: owner-provided license files (`LICENSE-MIT`, `LICENSE-APACHE`,
+`LICENSE-SYMBOLICA.md`), `repository` URL, owner API review, archive of the change.
 
 ## Tech Stack
 

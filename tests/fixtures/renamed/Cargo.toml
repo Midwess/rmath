@@ -1,0 +1,12 @@
+# Fixture: depends on rmath under a different name to prove the `$crate` shims hold.
+# Standalone package (own `[workspace]`), built by CI, never published.
+[package]
+name = "renamed-dependency-fixture"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+rm = { package = "rmath", path = "../../.." }
+
+[workspace]
