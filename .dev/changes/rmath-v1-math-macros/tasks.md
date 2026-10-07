@@ -1,6 +1,6 @@
 # Tasks: rmath-v1-math-macros
 
-## Progress: [6/35]
+## Progress: [7/35]
 
 Every "verify" task records its result in the API Verification Log in `blueprint.md` before
 dependent tasks start. All Symbolica facts come from docs.rs only (ADR-0001).
@@ -27,7 +27,7 @@ dependent tasks start. All Symbolica facts come from docs.rs only (ADR-0001).
 - [x] 1.6 `parse/ast.rs` + `parse/expr.rs` Pratt parser. Precedence tests: `-x^2`, `2^3^2`,
       `2^-x*3`, `x^-1`, `n!^2`, `-n!`, `(a+b)*c`. Error tests: `2x`, `x y`, `2(x)`, `f!(x)`,
       `x = 1`, `a::b`, `x.y`, `"s"`, `x +`, `f(,)`, empty input.
-- [ ] 1.7 Runtime: `into_expr.rs` (`IntoExpr` + impls), `call.rs` (`Callable<N>`, impl for
+- [x] 1.7 Runtime: `into_expr.rs` (`IntoExpr` + impls), `call.rs` (`Callable<N>`, impl for
       `Symbol`), `prelude.rs` (built-in markers + consts, `I`), `__private.rs` helpers. Unit
       tests; confirm `#[diagnostic::on_unimplemented]` renders `{N}`.
 - [ ] 1.8 `expand/expr.rs` lowering + `__expr` entry + `expr!` shim in `src/macros.rs`.
