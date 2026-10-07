@@ -228,7 +228,11 @@ Verified on docs.rs/symbolica 3.0.1 during planning (2026-10-07):
 
 | Empirical (1.9): `symbol!` invoked through `$crate::__private::symbol!` inside the `symbols!` shim lands in the **user's** namespace: `symbols!(x); expr!(x) == parse!("x")` holds in an integration test | ✅ |
 
-Still to verify: conflicting re-declaration behaviour (undocumented → empirical test in 1.9) ·
+| 2.1: `MatchStack::{get(Symbol) -> Option<&Match>, get_atom(Symbol) -> Option<AtomView>, get_matches() -> &[(Symbol, Match)]}`; `Match::{Single(AtomView), Multiple(SliceType, Vec<AtomView>), FunctionName(Symbol)}` with `to_atom(&self) -> Atom` (argument lists wrapped in `arg(...)`) | ✅ |
+| 2.1: `MatchStackFn` = blanket impl for `Clone + Send + Sync + Fn(&MatchStack<'_>) -> ConditionResult`; return `Inconclusive` until all needed wildcards are bound. `ConditionResult::{True, False, Inconclusive}`, `From<bool>` | ✅ (primary guard design confirmed; no fallback needed) |
+| 2.1: `Condition<T>: From<T>` (→ `Yield`), `From<(Symbol, WildcardRestriction)>`, `&`/`\|`/`!` operators; `PatternAtomTreeIterator: Iterator<Item = HashMap<Symbol, Atom>>`; `BorrowReplacement` for `Replacement` and `&Replacement` (so `replace_multiple(&[Replacement])` works) | ✅ |
+
+Still to verify: conflicting re-declaration behaviour (undocumented → empirical test, deferred) ·
 `MatchStackFn` signature and binding access · `Match` → `Atom` for `a__`/`a___` ·
 `PatternAtomTreeIterator::Item` · `wrt` element type · `Solution` accessors · user-defined
 functions inside `func!`.

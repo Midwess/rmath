@@ -3,7 +3,7 @@
 use proc_macro2::{Delimiter, Group, Ident, Span, TokenTree};
 
 use super::{
-    ast::{BinOp, Expr, ExprKind},
+    ast::{BinOp, Expr, ExprKind, Wild},
     cursor::Cursor,
     error::{Error, SpanRange},
     lit,
@@ -189,10 +189,16 @@ fn primary(c: &mut Cursor, mode: Mode) -> Result<Expr, Error> {
                 c.bump();
                 call(id, &g, mode)
             }
-            _ => Ok(Expr {
-                span: id.span().into(),
-                kind: ExprKind::Ident(id),
-            }),
+            _ => match (mode, wildcard_arity(&id)?) {
+                (Mode::Pattern, Some(arity)) => Ok(Expr {
+                    span: id.span().into(),
+                    kind: ExprKind::Wildcard { ident: id, arity },
+                }),
+                _ => Ok(Expr {
+                    span: id.span().into(),
+                    kind: ExprKind::Ident(id),
+                }),
+            },
         },
         Some(TokenTree::Literal(l)) => Ok(Expr {
             span: l.span().into(),
@@ -223,6 +229,27 @@ fn primary(c: &mut Cursor, mode: Mode) -> Result<Expr, Error> {
                 msg,
             ))
         }
+    }
+}
+
+/// Symbolica's wildcard convention: a name with one to three trailing underscores.
+///
+/// Returns `Ok(None)` for ordinary names and an error for four or more underscores. Only
+/// consulted in pattern mode; in expression mode `a_` is a plain Rust identifier.
+pub fn wildcard_arity(id: &Ident) -> Result<Option<Wild>, Error> {
+    let name = id.to_string();
+    let underscores = name.len() - name.trim_end_matches('_').len();
+    match underscores {
+        0 => Ok(None),
+        _ if underscores == name.len() => Ok(None), // `_` alone is rejected elsewhere
+        1 => Ok(Some(Wild::One)),
+        2 => Ok(Some(Wild::OneOrMore)),
+        3 => Ok(Some(Wild::ZeroOrMore)),
+        _ => Err(Error::new(
+            id.span(),
+            format!("`{name}` has {underscores} trailing underscores; wildcards have at most three trailing underscores"),
+        )
+        .with_help("`a_` matches one argument, `a__` one or more, `a___` zero or more")),
     }
 }
 

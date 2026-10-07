@@ -35,8 +35,9 @@ pub fn lower(root: &Root, expr: &Expr) -> TokenStream {
         }
         ExprKind::Num(Num::Suffixed(lit)) => quote!(#r::__private::into_expr(&#lit)),
         ExprKind::Num(Num::Float(lit)) => quote!(#r::__private::float(#lit as f64)),
-        ExprKind::Ident(id) => {
+        ExprKind::Ident(id) | ExprKind::Wildcard { ident: id, .. } => {
             // Spanned at the identifier so E0425 and trait errors land on the user's token.
+            // A wildcard is a local `Symbol` bound by `rule!`/`find!`, so it lowers the same way.
             quote_spanned!(id.span()=> #r::__private::into_expr(&#id))
         }
         ExprKind::Splice(group) => quote!(#r::__private::into_expr(&#group)),

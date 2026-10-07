@@ -18,6 +18,8 @@ pub enum ExprKind {
     Num(Num),
     /// Re-emitted verbatim; rustc resolves it (symbol, splice or built-in).
     Ident(Ident),
+    /// `a_`, `a__`, `a___` in pattern mode: a wildcard declared implicitly by the rule.
+    Wildcard { ident: Ident, arity: Wild },
     /// `{ rust expression }` (or an invisible-delimiter group), spliced through `IntoExpr`.
     Splice(Group),
     /// Unary minus.
@@ -34,6 +36,14 @@ pub enum ExprKind {
         func: Ident,
         args: Vec<Expr>,
     },
+}
+
+/// How many arguments a wildcard matches: `a_` one, `a__` one or more, `a___` zero or more.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Wild {
+    One,
+    OneOrMore,
+    ZeroOrMore,
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -65,6 +75,7 @@ impl fmt::Display for Expr {
             ExprKind::Num(Num::I128(v)) => write!(f, "{v}"),
             ExprKind::Num(Num::Suffixed(l) | Num::Float(l)) => write!(f, "{l}"),
             ExprKind::Ident(id) => write!(f, "{id}"),
+            ExprKind::Wildcard { ident, .. } => write!(f, "(wc {ident})"),
             ExprKind::Splice(_) => write!(f, "{{...}}"),
             ExprKind::Neg(e) => write!(f, "(neg {e})"),
             ExprKind::Factorial(e) => write!(f, "(! {e})"),

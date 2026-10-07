@@ -8,4 +8,5 @@ pub mod cursor;
 pub mod error;
 pub mod expr;
 pub mod lit;
+pub mod rule;
 pub mod symbols;

@@ -146,6 +146,30 @@ fn missing_operands_are_reported_where_they_were_expected() {
     assert!(error("()").contains("expected an expression inside the parentheses"));
 }
 
+/// Parse `src` in pattern mode and render the AST.
+fn pattern(src: &str) -> String {
+    let mut c = Cursor::new(TokenStream::from_str(src).unwrap());
+    parse_all(&mut c, Mode::Pattern).unwrap().to_string()
+}
+
+#[test]
+fn trailing_underscores_denote_wildcards_only_in_pattern_mode() {
+    assert_eq!(pattern("f(a_, b__, c___)"), "(call f (wc a_) (wc b__) (wc c___))");
+    assert_eq!(pattern("x_ + 1"), "(+ (wc x_) 1)");
+    assert_eq!(parse("a_ + 1"), "(+ a_ 1)", "in expr mode `a_` is an ordinary Rust name");
+}
+
+#[test]
+fn more_than_three_trailing_underscores_is_an_error_in_pattern_mode() {
+    let mut c = Cursor::new(TokenStream::from_str("a____").unwrap());
+    let msg = parse_all(&mut c, Mode::Pattern)
+        .map(|e| e.to_string())
+        .expect_err("expected a parse error")
+        .to_compile_error()
+        .to_string();
+    assert!(msg.contains("at most three trailing underscores"), "{msg}");
+}
+
 #[test]
 fn a_lone_underscore_is_not_a_name() {
     let msg = error("x + _");
