@@ -1,6 +1,6 @@
 # Tasks: rmath-v1-math-macros
 
-## Progress: [14/35]
+## Progress: [15/35]
 
 Every "verify" task records its result in the API Verification Log in `blueprint.md` before
 dependent tasks start. All Symbolica facts come from docs.rs only (ADR-0001).
@@ -57,7 +57,7 @@ dependent tasks start. All Symbolica facts come from docs.rs only (ADR-0001).
       (`WildcardRestriction::filter`, single-wildcard guards).
 - [x] 2.2 Pattern mode in the parser: wildcard classification, `parse/rule.rs` (arms, `=>`,
       optional `, if` guard tokens, rule-set braces). Unit tests incl. unbound RHS wildcard.
-- [ ] 2.3 `src/rule.rs`: `Rule`, `ApplyRule`, `guard`, `find_all`. Unit tests.
+- [x] 2.3 `src/rule.rs`: `Rule`, `ApplyRule`, `guard`, `find_all`. Unit tests.
 - [ ] 2.4 `expand/rule.rs` + `rule!` shim. Tests: argument swap, `a__` match, guard
       (`if a_ != expr!(1)`), rule set applied in one pass, chained `.apply()`.
 - [ ] 2.5 `find!`: `parse/find.rs`, `expand/find.rs` (per-site struct), shim. Tests: field
