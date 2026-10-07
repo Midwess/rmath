@@ -72,10 +72,11 @@ Literals: integer → `into_expr(&<int>i64)`, or `i128` when it does not fit `i6
 `float(0.5)` (float coefficient); exact fractions are written `1/2` and normalised by
 Symbolica.
 
-Factorial: `n!` lowers to `factorial(atom)`. If task 1.3 finds no factorial in Symbolica's
-public API, the fallback is an rmath-owned symbol `rmath::factorial`: integer-literal
-arguments are folded at compile time (`5!` → `120`), symbolic arguments stay as
-`factorial(n)`, and a `func!` body containing a symbolic factorial returns `Err`.
+Factorial: `n!` lowers to `factorial(atom)` in `__private`. Verified in 1.3: Symbolica has
+`Integer::factorial(u32)` and the `gamma` function but no symbolic factorial. So `factorial`
+returns the exact `Integer::factorial(n)` when the argument is a non-negative integer that
+fits `u32`, and `gamma(a + 1)` otherwise (standard identity; evaluable inside `func!`).
+Negative integers and integers above `u32::MAX` also take the `gamma` path.
 
 ### Decision 2: Name resolution — explicit, compiler-checked (ADR-0003)
 

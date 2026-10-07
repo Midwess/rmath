@@ -1,6 +1,6 @@
 # Tasks: rmath-v1-math-macros
 
-## Progress: [1/35]
+## Progress: [3/35]
 
 Every "verify" task records its result in the API Verification Log in `blueprint.md` before
 dependent tasks start. All Symbolica facts come from docs.rs only (ADR-0001).
@@ -10,14 +10,16 @@ dependent tasks start. All Symbolica facts come from docs.rs only (ADR-0001).
 - [x] 1.1 Convert to a workspace: root `rmath` package + empty `rmath-macros` (proc-macro);
       remove the stub; `[workspace.package]` edition 2024, `rust-version = "1.96"`. Done when
       `cargo build` passes on 1.96.
-- [ ] 1.2 **Verify on docs.rs:** Symbolica cargo feature names (integer/float backends,
+- [x] 1.2 **Verify on docs.rs:** Symbolica cargo feature names (integer/float backends,
       allocator). Add `symbolica = "3.0"` with `default-features = false` and passthrough
       features `default = ["gmp", "faster-alloc"]`, `gmp`, `pure-rust`, `faster-alloc`. Add
       `include` whitelist. Narrow `.gitignore` to `.dev/symbolica/`, `.dev/test`, `/target`.
-- [ ] 1.3 **Verify on docs.rs:** `symbol!` namespace when called through a re-export;
+- [x] 1.3 **Verify on docs.rs:** `symbol!` namespace when called through a re-export;
       attribute syntax and conflicting re-declaration behaviour; Unicode names;
       `Into<Coefficient>` for `f64`, `i128`, `Rational`; `add_args` item type; factorial support
       (choose primary or fallback design); whether `AtomCore` already defines `apply`.
+      *(Namespace-via-re-export and re-declaration conflicts are undocumented → covered by
+      empirical tests in 1.9. Results logged in blueprint.md.)*
 - [ ] 1.4 `parse/cursor.rs` + `parse/error.rs` (SpanRange, Error, Errors, compile_error
       emission) with unit tests, including joint-punct detection for `==`, `=>`, `||`.
 - [ ] 1.5 `parse/lit.rs`: classify integer/float/suffixed literals. Tests: `1_000`, `0x1F`,
@@ -109,3 +111,11 @@ dependent tasks start. All Symbolica facts come from docs.rs only (ADR-0001).
 ## Notes
 
 Implementation notes, timings and verification results are appended here during development.
+
+- **1.2** rmath features: `default = ["gmp", "faster-alloc", "native-codegen",
+  "symbolica/tracing_max_level_info"]` (mirrors Symbolica's default set). Verified with
+  `cargo tree`: defaults pull `rug` and `rustfs-mimalloc` (Symbolica's allocator dep is the
+  `rustfs-mimalloc` package renamed to `mimalloc`); `--no-default-features --features pure-rust`
+  has no `rug` and resolves `malachite-nz`. Full default build passed locally (Rust 1.97,
+  Homebrew GMP/MPFR). A full *compile* with `pure-rust` is deferred to CI (task 5.1).
+- **1.2** `rtk` filters cargo output; use `rtk proxy cargo …` when exact output matters.

@@ -17,6 +17,24 @@ version.workspace = true
 edition.workspace = true
 rust-version.workspace = true
 license.workspace = true
+# Whitelist: nothing outside these paths may ever reach crates.io (keeps .dev/ out).
+include = ["src/**", "Cargo.toml", "README.md", "LICENSE-*", "CHANGELOG.md"]
+
+[features]
+# Mirrors Symbolica's own default set so behaviour matches a direct dependency.
+default = ["gmp", "faster-alloc", "native-codegen", "symbolica/tracing_max_level_info"]
+# GMP/MPFR numeric backends (fastest; needs the system GMP and MPFR libraries).
+gmp = ["symbolica/integer-gmp", "symbolica/float-mpfr"]
+# Pure-Rust numeric backends (no system libraries). Mutually exclusive with `gmp`.
+pure-rust = ["symbolica/integer-malachite", "symbolica/float-astro"]
+# Installs mimalloc as the global allocator of the final binary.
+faster-alloc = ["symbolica/faster_alloc"]
+# Symbolica's JIT / native code generation support.
+native-codegen = ["symbolica/native_code_generation"]
 
 [dependencies]
 rmath-macros = { path = "rmath-macros", version = "=0.1.0" }
+symbolica = { version = "3.0", default-features = false }
+
+[dev-dependencies]
+trybuild = "1"

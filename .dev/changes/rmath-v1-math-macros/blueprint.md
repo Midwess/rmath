@@ -212,11 +212,22 @@ Verified on docs.rs/symbolica 3.0.1 during planning (2026-10-07):
 | `SolutionSet::{iter, get, Index<usize>, len, variables, as_point_dict, is_empty}` | ✅ |
 | `EvaluatorBuilder::build() -> Result<ExpressionEvaluator<Complex<Rational>>, _>`; `map_coeff(&\|c\| c.re.to_f64())`; `evaluate_single(&mut self, &[T]) -> T` | ✅ |
 
-Still to verify (owned by the "verify" tasks): `symbol!` namespace via re-export · conflicting
-re-declaration behaviour · `Into<Coefficient>` for `f64`/`i128`/`Rational` · factorial support ·
-existing `apply` on `AtomCore` · `MatchStackFn` signature and binding access · `Match` →
-`Atom` for `a__`/`a___` · `pattern_match` defaults · `wrt` element type · `Solution` accessors ·
-`evaluator` param type · user-defined functions inside `func!`.
+| Symbolica cargo features (task 1.2, via docs.rs features page + `cargo info`): `default` = `tracing_max_level_info`, `faster_alloc` (→ `mimalloc`), `integer-gmp` (→ `rug`), `float-mpfr`, `native_code_generation`; pure-Rust: `integer-malachite`, `float-astro`; also `wasm`, `serde`, `bincode`, `binary_size` | ✅ |
+
+| `From<T> for Coefficient` (task 1.3): all of `i8`–`i128`, `isize`, `u8`–`u128`, `usize` (and `&T`), `f64`, `Integer`, `Rational`, `Float`, `Complex<Rational>`, `Complex<Float>`, `(iN, iN)` tuples | ✅ |
+| `AtomCore` has no method named `apply` (only `map_*`), so `ApplyRule::apply` cannot clash; `is_positive/is_nonnegative/is_integer -> ConditionResult` exist | ✅ |
+| `AtomCore::evaluator<A: AtomCore>(&self, params: &[A])`; `Symbol` is **not** listed as an `AtomCore` implementor → `compile_f64` takes `&[Atom]` (symbols converted with `Atom::var`) | ✅ (design adjusted) |
+| `AtomCore::pattern_match(&self, &Pattern, C: Into<Option<&Condition<PatternRestriction>>>, S: Into<Option<&MatchSettings>>) -> PatternAtomTreeIterator`; pass `None, None` for defaults | ✅ |
+| `Symbol`: `get_wildcard_level() -> u8` (`x_`=1, `x__`=2, `x___`=3); `Symbol::parse`, `get_symbol`; implements `Add/Sub/Mul/Div`, `Ord`; namespace syntax `"ns::x"`; no documented character restrictions | ✅ |
+| `transcendental` module: `gamma`, `erf`, `zeta`, `polylog`, hyperbolic/inverse trig, Bessel, `euler_gamma`; **no factorial** | ✅ (fallback design applies) |
+
+| `Integer::factorial(n: u32) -> Integer`, `Integer::binom(n: i64, k: i64)`, `Integer::multinom(&[u32])`; `Integer: Into<Coefficient>`, `to_i64() -> Option<i64>` | ✅ |
+
+Still to verify: `symbol!` namespace via re-export and conflicting re-declaration behaviour
+(undocumented → empirical tests in 1.9) ·
+`MatchStackFn` signature and binding access · `Match` → `Atom` for `a__`/`a___` ·
+`PatternAtomTreeIterator::Item` · `wrt` element type · `Solution` accessors · user-defined
+functions inside `func!`.
 
 ## Risks and Mitigations
 

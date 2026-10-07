@@ -10,3 +10,7 @@ license.workspace = true
 proc-macro = true
 
 [dependencies]
+proc-macro2 = "1"
+quote = "1"
+# Only literal parsing is delegated to syn; the math grammar is hand-written (no `full`).
+syn = { version = "2", default-features = false, features = ["parsing", "proc-macro", "printing"] }
