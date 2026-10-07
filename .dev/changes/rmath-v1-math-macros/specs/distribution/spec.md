@@ -24,7 +24,7 @@ and that each user needs their own runtime license (linking to symbolica.io/lice
 
 ### Requirement: rmath's own license
 
-rmath's own code SHALL be licensed under the MIT license, with a `LICENSE-MIT` file and a
+rmath's own code SHALL be licensed under the MIT license, with a `LICENSE` file and a
 matching `license` field in both crates' `Cargo.toml`. (Owner decision, 2026-10-07.)
 
 #### Scenario: Cargo metadata

@@ -20,7 +20,7 @@ rust-version.workspace = true
 license.workspace = true
 repository.workspace = true
 # Whitelist: nothing outside these paths may ever reach crates.io (keeps .dev/ out).
-include = ["src/**", "Cargo.toml", "README.md", "LICENSE-*", "CHANGELOG.md"]
+include = ["src/**", "Cargo.toml", "README.md", "LICENSE*", "CHANGELOG.md"]
 
 [features]
 # Mirrors Symbolica's own default set so behaviour matches a direct dependency.

@@ -146,7 +146,7 @@ Implementation notes, timings and verification results are appended here during 
 - **5.1** CI: tests on 1.96.0 (MSRV) and 1.97.0 (trybuild snapshots pinned to it), fmt +
   clippy -D warnings + rustdoc -D warnings, pure-rust build/test, and the renamed-dependency
   fixture (`tests/fixtures/renamed`, verified locally: all six macros work as `rm::…`).
-- **1.12** Owner chose MIT (2026-10-07): `LICENSE-MIT` added, `license = "MIT"` and
+- **1.12** Owner chose MIT (2026-10-07): `LICENSE` added, `license = "MIT"` and
   `repository = "https://github.com/midwess/rmath"` set via `[workspace.package]`. Still missing:
   `LICENSE-SYMBOLICA.md` (verbatim copy of Symbolica's license, required by §3 before any
   crates.io release).
