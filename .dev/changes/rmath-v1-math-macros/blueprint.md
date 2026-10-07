@@ -225,8 +225,9 @@ Verified on docs.rs/symbolica 3.0.1 during planning (2026-10-07):
 | `TranscendentalFunctions::gamma(&self) -> Self::Output`, implemented for every `AtomCore`; no factorial/binomial on the trait → symbolic `n!` lowers to `(n + 1).gamma()` | ✅ |
 | Found while compiling 1.7: `Symbol` has an inherent `call<A: FunctionArguments>(…)` method. Inherent methods shadow trait methods, so rmath's dispatch trait method is named `Callable::invoke`, not `call`. | ✅ (design adjusted) |
 
-Still to verify: `symbol!` namespace via re-export and conflicting re-declaration behaviour
-(undocumented → empirical tests in 1.9) ·
+| Empirical (1.9): `symbol!` invoked through `$crate::__private::symbol!` inside the `symbols!` shim lands in the **user's** namespace: `symbols!(x); expr!(x) == parse!("x")` holds in an integration test | ✅ |
+
+Still to verify: conflicting re-declaration behaviour (undocumented → empirical test in 1.9) ·
 `MatchStackFn` signature and binding access · `Match` → `Atom` for `a__`/`a___` ·
 `PatternAtomTreeIterator::Item` · `wrt` element type · `Solution` accessors · user-defined
 functions inside `func!`.

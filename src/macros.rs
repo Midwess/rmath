@@ -21,3 +21,22 @@ macro_rules! expr {
         $crate::__private::__expr! { $crate ; $($t)* }
     };
 }
+
+/// Declare Symbolica symbols as compiler-checked local bindings.
+///
+/// ```
+/// use rmath::{expr, symbols, symbolica::parse};
+///
+/// symbols!(x, y);
+/// assert_eq!(expr!(x + y), parse!("x + y"));
+/// ```
+///
+/// Each name becomes a `let` binding of type `Symbol`, so a typo inside `expr!` is an
+/// ordinary "cannot find value" compile error. Symbols are interned globally by name: two
+/// `symbols!(x)` in different functions refer to the same symbol.
+#[macro_export]
+macro_rules! symbols {
+    ($($t:tt)*) => {
+        $crate::__private::__symbols! { $crate ; $($t)* }
+    };
+}

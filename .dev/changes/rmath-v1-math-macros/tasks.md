@@ -1,6 +1,6 @@
 # Tasks: rmath-v1-math-macros
 
-## Progress: [8/35]
+## Progress: [9/35]
 
 Every "verify" task records its result in the API Verification Log in `blueprint.md` before
 dependent tasks start. All Symbolica facts come from docs.rs only (ADR-0001).
@@ -32,7 +32,7 @@ dependent tasks start. All Symbolica facts come from docs.rs only (ADR-0001).
       tests; confirm `#[diagnostic::on_unimplemented]` renders `{N}`.
 - [x] 1.8 `expand/expr.rs` lowering + `__expr` entry + `expr!` shim in `src/macros.rs`.
       Smoke test: `expr!(x^2 + 1) == parse!("x^2+1")`.
-- [ ] 1.9 `symbols!`: `parse/symbols.rs`, `expand/symbols.rs`, shim. Tests: bindings visible
+- [x] 1.9 `symbols!`: `parse/symbols.rs`, `expand/symbols.rs`, shim. Tests: bindings visible
       after the macro (proves shim hygiene), attributes applied, `τ`, `r#type`, display name
       `tau0 = "τ_0"`, `x_` rejected, unknown attribute rejected with the attribute list.
 - [ ] 1.10 `tests/expr_equiv.rs`: ~30 cases vs `symbolica::parse!` covering every grammar
@@ -125,3 +125,8 @@ Implementation notes, timings and verification results are appended here during 
   must tell users the same for their own test suites, and CI (5.1) inherits the config.
 - **1.7** `Symbol` has an inherent `call(...)` in Symbolica, so rmath's dispatch method is
   `Callable::invoke`. Symbolic `n!` lowers to `(n + 1).gamma()`; integer `n!` is exact.
+- **1.9** `symbols!` namespace verified empirically: `symbols!(x); expr!(x) == parse!("x")`.
+  rustc's `mixed_script_confusables` lint fires on a crate whose only Greek identifier is e.g.
+  `θ`; README should mention `#![allow(mixed_script_confusables)]` for single-letter symbols.
+- **1.9** `#[diagnostic::on_unimplemented]` renders `{N}` as `_` when the arity cannot be
+  inferred (e.g. calling a plain `fn` item inside `expr!`); 1.11 must check a concrete arity.
