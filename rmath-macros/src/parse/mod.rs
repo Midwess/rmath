@@ -8,6 +8,7 @@ pub mod cursor;
 pub mod error;
 pub mod expr;
 pub mod find;
+pub mod func;
 pub mod lit;
 pub mod rule;
 pub mod solve;
