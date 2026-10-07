@@ -68,3 +68,24 @@ fn imaginary_unit_and_factorial() {
     assert_eq!(expr!(n!), (Atom::var(n) + 1).gamma());
     assert_eq!(expr!(3! ^ 2), Atom::num(36));
 }
+
+#[test]
+fn normalisation_happens_in_symbolica_not_in_the_macro() {
+    symbols!(x, f);
+    assert_eq!(expr!(x ^ 2 * x ^ 3), parse!("x^5"));
+    assert_eq!(expr!(2 * x + 3 * x), parse!("5*x"));
+    assert_eq!(expr!(x - x), Atom::zero());
+    assert_eq!(expr!(f(x) ^ 2 / f(x)), parse!("f(x)"));
+    assert_eq!(expr!(-(-x)), parse!("x"));
+    assert_eq!(expr!((x + 1)!), (Atom::var(x) + 2).gamma());
+}
+
+#[test]
+fn floats_compare_numerically() {
+    symbols!(x);
+    let coefficient_of =
+        |e: Atom| e.evaluate(&std::collections::HashMap::from([(Atom::var(x), 1.0_f64)]));
+    assert_eq!(coefficient_of(expr!(0.1 * x + 0.2 * x)), Ok(0.1 + 0.2));
+    assert_eq!(coefficient_of(expr!(2.5e-1 * x)), Ok(0.25));
+    assert_eq!(coefficient_of(expr!(1 / 4 * x)), Ok(0.25));
+}

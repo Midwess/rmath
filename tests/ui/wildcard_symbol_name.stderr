@@ -1,0 +1,7 @@
+error: symbol name `a_` ends in `_`, which Symbolica reserves for wildcards
+
+       help: rename the symbol; wildcards are declared implicitly inside `rule!` and `find!`
+ --> tests/ui/wildcard_symbol_name.rs:4:14
+  |
+4 |     symbols!(a_, b);
+  |              ^^

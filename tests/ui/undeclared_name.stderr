@@ -1,0 +1,11 @@
+error[E0425]: cannot find value `xx` in this scope
+ --> tests/ui/undeclared_name.rs:5:19
+  |
+5 |     let _ = expr!(xx + 1);
+  |                   ^^
+  |
+help: a local variable with a similar name exists
+  |
+5 -     let _ = expr!(xx + 1);
+5 +     let _ = expr!(x + 1);
+  |

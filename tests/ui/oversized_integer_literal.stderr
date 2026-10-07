@@ -1,0 +1,7 @@
+error: integer literal is too large; rmath supports literals up to i128::MAX
+
+       help: splice a Rust value instead, e.g. `{ big_integer }`
+ --> tests/ui/oversized_integer_literal.rs:4:19
+  |
+4 |     let _ = expr!(170141183460469231731687303715884105728);
+  |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

@@ -1,0 +1,7 @@
+error: only numeric literals are allowed in math expressions
+
+       help: to splice a Rust value, wrap it in braces: `{ value }`
+ --> tests/ui/string_literal.rs:4:19
+  |
+4 |     let _ = expr!("x" + 1);
+  |                   ^^^

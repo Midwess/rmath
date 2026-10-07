@@ -1,6 +1,6 @@
 # Tasks: rmath-v1-math-macros
 
-## Progress: [9/35]
+## Progress: [11/35]
 
 Every "verify" task records its result in the API Verification Log in `blueprint.md` before
 dependent tasks start. All Symbolica facts come from docs.rs only (ADR-0001).
@@ -35,9 +35,9 @@ dependent tasks start. All Symbolica facts come from docs.rs only (ADR-0001).
 - [x] 1.9 `symbols!`: `parse/symbols.rs`, `expand/symbols.rs`, shim. Tests: bindings visible
       after the macro (proves shim hygiene), attributes applied, `τ`, `r#type`, display name
       `tau0 = "τ_0"`, `x_` rejected, unknown attribute rejected with the attribute list.
-- [ ] 1.10 `tests/expr_equiv.rs`: ~30 cases vs `symbolica::parse!` covering every grammar
+- [x] 1.10 `tests/expr_equiv.rs`: ~30 cases vs `symbolica::parse!` covering every grammar
       rule, splices (`k`, `&Atom`, `{k+1}`), `I`, function symbols, floats compared numerically.
-- [ ] 1.11 `tests/ui.rs` (trybuild) with `.stderr` snapshots: undeclared name, implicit
+- [x] 1.11 `tests/ui.rs` (trybuild) with `.stderr` snapshots: undeclared name, implicit
       multiplication, `f!(`, wrong built-in arity, non-`IntoExpr` splice, unknown attribute,
       string literal, oversized integer literal.
 - [ ] 1.12 `README.md` (install, flagship example, grammar + precedence table, pitfalls,

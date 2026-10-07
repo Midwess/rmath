@@ -1,0 +1,23 @@
+error: implicit multiplication is not supported
+
+       help: write `2 * x`
+ --> tests/ui/implicit_multiplication.rs:5:19
+  |
+5 |     let _ = expr!(2x);
+  |                   ^^
+
+error: implicit multiplication is not supported
+
+       help: insert `*` between `x` and `y`
+ --> tests/ui/implicit_multiplication.rs:6:21
+  |
+6 |     let _ = expr!(x y);
+  |                     ^
+
+error: implicit multiplication is not supported
+
+       help: insert `*` between `2` and `(x + y)`
+ --> tests/ui/implicit_multiplication.rs:7:21
+  |
+7 |     let _ = expr!(2 (x + y));
+  |                     ^^^^^^^

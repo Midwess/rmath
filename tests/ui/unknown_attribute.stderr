@@ -1,0 +1,15 @@
+error: unknown attribute `Hermitian`
+
+       help: supported attributes: Symmetric, Antisymmetric, Cyclesymmetric, Linear, Flat, Scalar, Real, Integer, Positive
+ --> tests/ui/unknown_attribute.rs:4:17
+  |
+4 |     symbols!(x: Hermitian, y: Real + Bounded);
+  |                 ^^^^^^^^^
+
+error: unknown attribute `Bounded`
+
+       help: supported attributes: Symmetric, Antisymmetric, Cyclesymmetric, Linear, Flat, Scalar, Real, Integer, Positive
+ --> tests/ui/unknown_attribute.rs:4:38
+  |
+4 |     symbols!(x: Hermitian, y: Real + Bounded);
+  |                                      ^^^^^^^

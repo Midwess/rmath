@@ -1,0 +1,57 @@
+error[E0277]: `Sin` cannot be called with 2 argument(s)
+ --> tests/ui/wrong_builtin_arity.rs:5:19
+  |
+5 |     let _ = expr!(sin(x, y));
+  |                   ^^^ the trait `Callable<2>` is not implemented for `Sin`
+  |
+  = note: built-in functions have a fixed number of arguments; symbols accept any number
+help: the trait `Callable<2>` is not implemented for `Sin`
+      but trait `Callable<1>` is implemented for it
+ --> src/prelude.rs
+  |
+  |           impl Callable<1> for $marker {
+  |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+  | / builtin_unary! {
+  | |     /// Sine.
+  | |     Sin => sin / sin;
+  | |     /// Cosine.
+... |
+  | |     Abs => abs / abs;
+  | | }
+  | |_- in this macro invocation
+note: required by a bound in `rmath::__private::call`
+ --> src/__private.rs
+  |
+  | pub fn call<F: Callable<N> + ?Sized, const N: usize>(f: &F, args: [Atom; N]) -> Atom {
+  |                ^^^^^^^^^^^ required by this bound in `call`
+  = note: this error originates in the macro `builtin_unary` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: `Sqrt` cannot be called with 0 argument(s)
+ --> tests/ui/wrong_builtin_arity.rs:6:19
+  |
+6 |     let _ = expr!(sqrt());
+  |                   ^^^^ the trait `Callable<0>` is not implemented for `Sqrt`
+  |
+  = note: built-in functions have a fixed number of arguments; symbols accept any number
+help: the trait `Callable<0>` is not implemented for `Sqrt`
+      but trait `Callable<1>` is implemented for it
+ --> src/prelude.rs
+  |
+  |           impl Callable<1> for $marker {
+  |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+  | / builtin_unary! {
+  | |     /// Sine.
+  | |     Sin => sin / sin;
+  | |     /// Cosine.
+... |
+  | |     Abs => abs / abs;
+  | | }
+  | |_- in this macro invocation
+note: required by a bound in `rmath::__private::call`
+ --> src/__private.rs
+  |
+  | pub fn call<F: Callable<N> + ?Sized, const N: usize>(f: &F, args: [Atom; N]) -> Atom {
+  |                ^^^^^^^^^^^ required by this bound in `call`
+  = note: this error originates in the macro `builtin_unary` (in Nightly builds, run with -Z macro-backtrace for more info)

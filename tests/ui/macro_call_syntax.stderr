@@ -1,0 +1,7 @@
+error: macro-call syntax is not a math expression
+
+       help: to splice Rust code, wrap it in braces: `{ f!(x) }`
+ --> tests/ui/macro_call_syntax.rs:5:20
+  |
+5 |     let _ = expr!(f!(x) + 1);
+  |                    ^^^^

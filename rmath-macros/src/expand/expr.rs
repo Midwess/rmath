@@ -61,8 +61,11 @@ pub fn lower(root: &Root, expr: &Expr) -> TokenStream {
             quote!(#r::__private::#helper(#lhs, #rhs))
         }
         ExprKind::Call { func, args } => {
+            // The arity is spelled out so a wrong count fails on the `Callable<N>` bound
+            // (and its message) instead of on an array-size mismatch.
+            let n = Literal::usize_unsuffixed(args.len());
             let args = args.iter().map(|a| lower(root, a));
-            quote_spanned!(func.span()=> #r::__private::call(&#func, [#(#args),*]))
+            quote_spanned!(func.span()=> #r::__private::call::<_, #n>(&#func, [#(#args),*]))
         }
     }
 }
