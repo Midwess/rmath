@@ -1,5 +1,8 @@
 //! A tour of every rmath macro. Run with `cargo run --example tour`.
 
+// Single Greek letters as symbol names trip rustc's confusables lint; that is intended here.
+#![allow(mixed_script_confusables)]
+
 use rmath::prelude::*;
 
 fn main() {
