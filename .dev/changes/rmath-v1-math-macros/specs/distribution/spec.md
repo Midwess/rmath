@@ -24,14 +24,13 @@ and that each user needs their own runtime license (linking to symbolica.io/lice
 
 ### Requirement: rmath's own license
 
-rmath's own code SHALL be licensed under MIT OR Apache-2.0 with `LICENSE-MIT` and
-`LICENSE-APACHE` files and a matching `license` field in both crates' `Cargo.toml`.
-(Assumption to confirm with the owner before Phase 1 ends.)
+rmath's own code SHALL be licensed under the MIT license, with a `LICENSE-MIT` file and a
+matching `license` field in both crates' `Cargo.toml`. (Owner decision, 2026-10-07.)
 
 #### Scenario: Cargo metadata
 
 - WHEN `cargo metadata` is inspected
-- THEN both `rmath` and `rmath-macros` report `license = "MIT OR Apache-2.0"`
+- THEN both `rmath` and `rmath-macros` report `license = "MIT"`
 
 ### Requirement: Symbolica source never enters version control
 

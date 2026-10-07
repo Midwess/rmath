@@ -6,7 +6,8 @@ resolver = "3"
 version = "0.1.0"
 edition = "2024"
 rust-version = "1.96"
-license = "MIT OR Apache-2.0"
+license = "MIT"
+repository = "https://github.com/midwess/rmath"
 
 [package]
 name = "rmath"
@@ -17,6 +18,7 @@ version.workspace = true
 edition.workspace = true
 rust-version.workspace = true
 license.workspace = true
+repository.workspace = true
 # Whitelist: nothing outside these paths may ever reach crates.io (keeps .dev/ out).
 include = ["src/**", "Cargo.toml", "README.md", "LICENSE-*", "CHANGELOG.md"]
 

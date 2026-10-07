@@ -214,7 +214,7 @@ evaluator reuses internal buffers, hence `let mut`.
 
 ## Licensing
 
-rmath itself is dual-licensed under MIT or Apache-2.0, at your option.
+rmath itself is licensed under the MIT license (see `LICENSE-MIT`).
 
 rmath depends on **Symbolica**, which is *source-available, not open source*
 (Symbolica Source-Available License 1.0, included as `LICENSE-SYMBOLICA.md`).
