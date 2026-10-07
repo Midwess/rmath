@@ -1,6 +1,6 @@
 # Tasks: rmath-v1-math-macros
 
-## Progress: [3/35]
+## Progress: [4/35]
 
 Every "verify" task records its result in the API Verification Log in `blueprint.md` before
 dependent tasks start. All Symbolica facts come from docs.rs only (ADR-0001).
@@ -20,7 +20,7 @@ dependent tasks start. All Symbolica facts come from docs.rs only (ADR-0001).
       (choose primary or fallback design); whether `AtomCore` already defines `apply`.
       *(Namespace-via-re-export and re-declaration conflicts are undocumented → covered by
       empirical tests in 1.9. Results logged in blueprint.md.)*
-- [ ] 1.4 `parse/cursor.rs` + `parse/error.rs` (SpanRange, Error, Errors, compile_error
+- [x] 1.4 `parse/cursor.rs` + `parse/error.rs` (SpanRange, Error, Errors, compile_error
       emission) with unit tests, including joint-punct detection for `==`, `=>`, `||`.
 - [ ] 1.5 `parse/lit.rs`: classify integer/float/suffixed literals. Tests: `1_000`, `0x1F`,
       `2i8`, `0.5`, `2x` (implicit-mult error), value beyond `i128` (error).
