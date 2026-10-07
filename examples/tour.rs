@@ -23,7 +23,10 @@ fn main() {
     // be tried with its arguments swapped).
     symbols!(g);
     let drop_unless_one = rule!(g(a_, b_) => 0, if a_ != expr!(1));
-    println!("guard    {}", expr!(g(1, 2) + g(3, 4)).apply(&drop_unless_one));
+    println!(
+        "guard    {}",
+        expr!(g(1, 2) + g(3, 4)).apply(&drop_unless_one)
+    );
 
     // find! — matches with wildcards as named fields.
     let sums = expr!(g(1, 2) + g(x, y) + 7);

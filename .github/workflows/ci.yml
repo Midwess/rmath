@@ -43,8 +43,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: dtolnay/rust-toolchain@stable
+      # Pinned: rustfmt output differs between releases (1.99 wraps lines 1.97 leaves alone),
+      # so lint on the same toolchain the snapshots use and developers are expected to run.
+      - uses: dtolnay/rust-toolchain@master
         with:
+          toolchain: "1.97.0"
           components: rustfmt, clippy
       - name: Install GMP and MPFR
         run: sudo apt-get update && sudo apt-get install -y libgmp-dev libmpfr-dev m4
