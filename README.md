@@ -50,6 +50,64 @@ rmath = { version = "0.1", default-features = false, features = ["pure-rust"] }
 
 `gmp` and `pure-rust` are mutually exclusive.
 
+## Running the examples
+
+Prerequisites: Rust 1.96 or newer and, for the default features, the GMP and MPFR libraries:
+
+```sh
+brew install gmp mpfr                       # macOS
+sudo apt-get install libgmp-dev libmpfr-dev m4   # Debian/Ubuntu
+```
+
+Clone and run the tour, which exercises every macro:
+
+```sh
+git clone https://github.com/midwess/rmath.git
+cd rmath
+cargo run --example tour
+```
+
+Symbolica prints a license banner first (see [Licensing](#licensing)); the tour's output follows:
+
+```text
+expr!    1/2*sin(y)+3*x^2-f(x,y)
+expand   1+3*x+3*x^2+x^3
+d/dx     cos(x)+3*x^2
+rule!    1/2*sin(y)-(x-y)+3*x^2
+guard    g(1,2)
+find!    a_ = 1, b_ = 2
+find!    a_ = x, b_ = y
+solve!   x = 1, y = 1
+over R   solutions: 0
+func!    τ(0.1, 4.9) = -0.4892
+5! = 120, (x+1)! = gamma(2+x)
+```
+
+Other useful commands:
+
+```sh
+cargo run --release --example tour          # optimised build
+cargo run --example large_expr              # a 200-term expr!, mostly a compile-time check
+cargo run --example tour --no-default-features --features pure-rust   # without GMP/MPFR
+cargo test                                  # the whole suite (single-threaded, see below)
+```
+
+To try your own code, add a file under `examples/`, e.g. `examples/mine.rs`:
+
+```rust
+use rmath::prelude::*;
+
+fn main() {
+    symbols!(x, y);
+    let e = expr!(x ^ 2 + 2 * x * y + y ^ 2);
+    println!("{}", e.factor());               // (x+y)^2 — the full Symbolica API is available
+    let mut f = func!(|x, y| e).unwrap();
+    println!("{}", f(1.0, 2.0));              // 9
+}
+```
+
+and run it with `cargo run --example mine`.
+
 ## Macros
 
 ### `symbols!`
