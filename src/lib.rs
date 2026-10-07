@@ -3,6 +3,7 @@
 #[doc(hidden)]
 pub mod __private;
 mod call;
+mod func;
 mod into_expr;
 mod macros;
 pub mod prelude;

@@ -2,7 +2,7 @@
 //! built-in functions and constants, and rmath's traits.
 
 pub use crate::{
-    ApplyRule, Callable, IntoExpr, Rule, SolutionExt, expr, find, rule, solve, symbols,
+    ApplyRule, Callable, IntoExpr, Rule, SolutionExt, expr, find, func, rule, solve, symbols,
 };
 pub use symbolica::atom::{Atom, AtomCore, Symbol};
 

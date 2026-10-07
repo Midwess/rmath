@@ -5,9 +5,10 @@ use symbolica::{atom::AtomCore, domains::integer::Integer, id::Pattern};
 
 use crate::{Callable, IntoExpr};
 
+pub use crate::func::compile_f64;
 pub use crate::rule::{Rule, find_all, guard};
 pub use crate::solve::solve;
-pub use rmath_macros::{__expr, __find, __rule, __solve, __symbols};
+pub use rmath_macros::{__expr, __find, __func, __rule, __solve, __symbols};
 pub use symbolica::{atom::Atom, id::Replacement, solve::SolveDomain, symbol};
 
 pub fn into_expr<T: IntoExpr + ?Sized>(value: &T) -> Atom {
@@ -61,6 +62,11 @@ pub fn factorial(value: Atom) -> Atom {
 /// Convert an expression into a pattern without needing `AtomCore` in the caller's scope.
 pub fn pattern(expr: Atom) -> Pattern {
     expr.to_pattern()
+}
+
+/// A `func!` parameter: must be a `Symbol`, checked by the compiler at the call site.
+pub fn param(symbol: &symbolica::atom::Symbol) -> Atom {
+    Atom::var(*symbol)
 }
 
 #[cfg(test)]

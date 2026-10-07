@@ -1,6 +1,6 @@
 # Tasks: rmath-v1-math-macros
 
-## Progress: [25/35]
+## Progress: [28/35]
 
 Every "verify" task records its result in the API Verification Log in `blueprint.md` before
 dependent tasks start. All Symbolica facts come from docs.rs only (ADR-0001).
@@ -88,12 +88,12 @@ dependent tasks start. All Symbolica facts come from docs.rs only (ADR-0001).
       function symbols in the body.
 - [x] 4.2 `parse/func.rs`: `|a, b|` and `||` (joint punct), identifiers only; reject typed or
       duplicate params. Unit tests.
-- [ ] 4.3 `src/func.rs` (`compile_f64`) + `expand/func.rs` (fixed-arity closure, mixed-site
+- [x] 4.3 `src/func.rs` (`compile_f64`) + `expand/func.rs` (fixed-arity closure, mixed-site
       temporaries) + shim.
-- [ ] 4.4 Tests: arity 0, 1, 2, 5; values vs hand-computed `f64`; captured value frozen after
+- [x] 4.4 Tests: arity 0, 1, 2, 5; values vs hand-computed `f64`; captured value frozen after
       mutation; free symbol → `Err`; existing `Atom` as body. trybuild: typed param, duplicate
       param, wrong call arity.
-- [ ] 4.5 Docs: `func!` section, README feature table.
+- [x] 4.5 Docs: `func!` section, README feature table.
 
 ## 5. Release readiness
 

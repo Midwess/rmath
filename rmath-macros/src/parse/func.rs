@@ -64,7 +64,9 @@ fn parameters(c: &mut Cursor) -> Result<Vec<Ident>, Error> {
                 colon.span(),
                 "parameters are symbol names only; types are not accepted here",
             )
-            .with_help(format!("write `|{param}|`: the compiled function always takes `f64`s")));
+            .with_help(format!(
+                "write `|{param}|`: the compiled function always takes `f64`s"
+            )));
         }
         if params.contains(&param) {
             return Err(Error::new(

@@ -1,0 +1,5 @@
+error: duplicate parameter `x`
+ --> tests/ui/func_duplicate_param.rs:5:23
+  |
+5 |     let _ = func!(|x, x| x);
+  |                       ^

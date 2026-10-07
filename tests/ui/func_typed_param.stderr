@@ -1,0 +1,7 @@
+error: parameters are symbol names only; types are not accepted here
+
+       help: write `|x|`: the compiled function always takes `f64`s
+ --> tests/ui/func_typed_param.rs:5:21
+  |
+5 |     let _ = func!(|x: f64| x);
+  |                     ^

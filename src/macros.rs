@@ -108,3 +108,25 @@ macro_rules! solve {
         $crate::__private::__solve! { $crate ; $($t)* }
     };
 }
+
+/// Compile an expression into a fast numeric closure.
+///
+/// ```
+/// use rmath::prelude::*;
+///
+/// symbols!(x, y);
+/// let mut f = func!(|x, y| x ^ 2 + sin(y)).unwrap();
+/// assert_eq!(f(3.0, 0.0), 9.0);
+/// ```
+///
+/// `func!(|params| body)` builds `body` with the usual grammar (the parameters are symbols in
+/// scope), compiles it with Symbolica's evaluator and returns
+/// `Result<impl FnMut(f64, ..) -> f64, EvaluationError>` with exactly one `f64` argument per
+/// parameter. Rust values spliced into the body are frozen when the function is created. The
+/// closure is `FnMut` because the evaluator reuses internal buffers, so bind it with `let mut`.
+#[macro_export]
+macro_rules! func {
+    ($($t:tt)*) => {
+        $crate::__private::__func! { $crate ; $($t)* }
+    };
+}

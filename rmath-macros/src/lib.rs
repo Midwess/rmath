@@ -83,3 +83,9 @@ pub fn __find(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
 pub fn __solve(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
     run(input, expand::solve::expand)
 }
+
+#[doc(hidden)]
+#[proc_macro]
+pub fn __func(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
+    run(input, expand::func::expand)
+}

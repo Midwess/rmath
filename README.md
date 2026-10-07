@@ -179,9 +179,38 @@ Each `lhs == rhs` becomes `lhs - rhs` for Symbolica's exact solver; the result i
 solver return `Err(SolveError::UnsupportedProblem(..))`, so splice a `Rational` (or an
 integer) instead.
 
-## Roadmap
+### `func!`
 
-Planned for v0.1: `func!` (compile an expression to a fast `f64` closure).
+```rust
+use rmath::prelude::*;
+
+symbols!(x, y);
+
+// Compile to a closure taking one `f64` per parameter.
+let mut f = func!(|x, y| x ^ 2 + sin(y)).unwrap();
+assert_eq!(f(3.0, 0.0), 9.0);
+
+// Any expression can be the body; spliced Rust values are frozen at creation time.
+let e = expr!(x * y + 1);
+let k = 2;
+let mut g = func!(|x, y| k * e).unwrap();
+assert_eq!(g(2.0, 5.0), 22.0);
+```
+
+The parameters must be symbols in scope; every other symbol in the body is an error
+(`EvaluationError`), returned rather than panicked. The closure is `FnMut` because Symbolica's
+evaluator reuses internal buffers, hence `let mut`.
+
+## Feature summary
+
+| Macro | Purpose | Returns |
+|---|---|---|
+| `symbols!` | declare symbols, with attributes and display names | `let` bindings of `Symbol` |
+| `expr!` | build an expression from math syntax | `Atom` |
+| `rule!` | one rewrite rule or a set, with optional guards | `Rule` (apply with `.apply(&rule)`) |
+| `find!` | every match of a pattern, wildcards as named fields | `impl Iterator` |
+| `solve!` | solve `lhs == rhs` systems for unknowns, optional domain | `Result<SolutionSet, SolveError>` |
+| `func!` | compile an expression to a numeric closure | `Result<impl FnMut(f64, ..) -> f64, EvaluationError>` |
 
 ## Licensing
 

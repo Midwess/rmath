@@ -99,11 +99,7 @@ pub fn parse_solve(body: TokenStream) -> Result<SolveInput, Errors> {
         }
     };
     if let Some(tok) = c.peek() {
-        return Err(Error::new(
-            tok.span(),
-            format!("unexpected `{tok}` after the domain"),
-        )
-        .into());
+        return Err(Error::new(tok.span(), format!("unexpected `{tok}` after the domain")).into());
     }
 
     Ok(SolveInput {
@@ -219,6 +215,9 @@ mod tests {
         assert!(error("[x ^ 2 - 1] for x").contains("expected `lhs == rhs`"));
         let msg = error("[x == 1] for x over Quaternions");
         assert!(msg.contains("unknown domain `Quaternions`"), "{msg}");
-        assert!(msg.contains("Complexes, Reals, Rationals, Integers"), "{msg}");
+        assert!(
+            msg.contains("Complexes, Reals, Rationals, Integers"),
+            "{msg}"
+        );
     }
 }

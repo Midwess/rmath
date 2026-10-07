@@ -5,6 +5,7 @@
 
 pub mod expr;
 pub mod find;
+pub mod func;
 pub mod rule;
 pub mod solve;
 pub mod symbols;
