@@ -1,0 +1,7 @@
+error: wildcard `b_` is not bound by the pattern
+
+       help: a guard may only refer to wildcards that appear in the pattern
+ --> tests/ui/rule_guard_unknown_wildcard.rs:5:34
+  |
+5 |     let _ = rule!(f(a_) => 0, if b_ != expr!(1));
+  |                                  ^^

@@ -1,0 +1,11 @@
+error[E0609]: no field `c_` on type `RmathMatch`
+ --> tests/ui/find_unknown_field.rs:7:19
+  |
+7 |         let _ = m.c_;
+  |                   ^^ unknown field
+  |
+help: a field with a similar name exists
+  |
+7 -         let _ = m.c_;
+7 +         let _ = m.a_;
+  |

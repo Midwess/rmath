@@ -112,10 +112,55 @@ assert_eq!(expr!(5!), Atom::num(120));
 - Paths (`a::b`), method calls (`x.y`) and macro calls (`f!(x)`) are not math; wrap them in
   braces to splice them.
 
+### `rule!`
+
+```rust
+use rmath::prelude::*;
+use rmath::symbolica::parse;
+
+symbols!(f, g, x, y);
+
+// Wildcards are declared by a trailing underscore: a_ (one argument), a__ (one or more),
+// a___ (zero or more). No `symbols!` needed for them.
+let swap = rule!(f(a_, b_) => g(b_, a_));
+assert_eq!(expr!(f(1, x) + f(y, 2)).apply(&swap), parse!("g(x, 1) + g(2, y)"));
+
+// A guard is any Rust `bool` expression; each wildcard is bound to its matched `Atom`.
+let keep_one = rule!(f(a_) => 0, if a_ != expr!(1));
+assert_eq!(expr!(f(1) + f(2)).apply(&keep_one), parse!("f(1)"));
+
+// Several rules in braces are applied together, in one pass.
+let set = rule! {
+    f(a_) => a_,
+    g(a__) => 0,
+};
+assert_eq!(expr!(f(x) + g(1, 2, 3)).apply(&set), parse!("x"));
+```
+
+`apply` comes from the `ApplyRule` trait (in the prelude) and works on any Symbolica
+expression. Rules compose by chaining: `e.apply(&r1).apply(&r2)`. A guard that contains a
+top-level comma (a turbofish, a closure) must be wrapped in parentheses.
+
+### `find!`
+
+```rust
+use rmath::prelude::*;
+
+symbols!(f, x, y);
+let e = expr!(f(1, 2) + f(x, y));
+
+// One field per wildcard, named after it; `m.c_` would be a compile error.
+let mut pairs: Vec<String> = find!(e, f(a_, b_))
+    .map(|m| format!("{}={}", m.a_, m.b_))
+    .collect();
+pairs.sort();
+assert_eq!(pairs, ["1=2", "x=y"]);
+```
+
 ## Roadmap
 
-Planned for v0.1: `rule!` / `find!` (pattern rewriting), `solve!` (equation systems) and
-`func!` (compile an expression to a fast `f64` closure).
+Planned for v0.1: `solve!` (equation systems) and `func!` (compile an expression to a fast
+`f64` closure).
 
 ## Licensing
 

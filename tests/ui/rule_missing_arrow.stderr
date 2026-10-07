@@ -1,0 +1,7 @@
+error: expected `=>` after the pattern
+
+       help: a rule is written `pattern => replacement`; a guard containing a top-level comma must be wrapped in parentheses
+ --> tests/ui/rule_missing_arrow.rs:5:27
+  |
+5 |     let _ = rule!(f(a_) + 1);
+  |                           ^

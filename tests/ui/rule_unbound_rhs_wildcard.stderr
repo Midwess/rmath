@@ -1,0 +1,7 @@
+error: wildcard `b_` does not appear on the left-hand side
+
+       help: every wildcard in the replacement must be bound by the pattern
+ --> tests/ui/rule_unbound_rhs_wildcard.rs:5:34
+  |
+5 |     let _ = rule!(f(a_) => g(a_, b_));
+  |                                  ^^

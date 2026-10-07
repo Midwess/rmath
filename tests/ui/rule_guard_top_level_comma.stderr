@@ -1,0 +1,7 @@
+error: expected `=>`, found `>`
+
+       help: a rule is written `pattern => replacement`; a guard containing a top-level comma must be wrapped in parentheses
+  --> tests/ui/rule_guard_top_level_comma.rs:10:50
+   |
+10 |     let _ = rule!(f(a_) => 0, if pick::<Atom, i32>(a_, 1) != expr!(1));
+   |                                                  ^

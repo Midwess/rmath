@@ -86,7 +86,9 @@ fn parse_arm(tokens: TokenStream) -> Result<RuleArm, Error> {
                 "expected `=>` after the pattern",
             ),
         }
-        .with_help("a rule is written `pattern => replacement`"));
+        .with_help(
+            "a rule is written `pattern => replacement`; a guard containing a top-level comma must be wrapped in parentheses",
+        ));
     }
     c.bump();
     c.bump();

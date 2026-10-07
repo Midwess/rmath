@@ -1,6 +1,6 @@
 # Tasks: rmath-v1-math-macros
 
-## Progress: [17/35]
+## Progress: [20/35]
 
 Every "verify" task records its result in the API Verification Log in `blueprint.md` before
 dependent tasks start. All Symbolica facts come from docs.rs only (ADR-0001).
@@ -62,14 +62,14 @@ dependent tasks start. All Symbolica facts come from docs.rs only (ADR-0001).
       (`if a_ != expr!(1)`), rule set applied in one pass, chained `.apply()`.
 - [x] 2.5 `find!`: `parse/find.rs`, `expand/find.rs` (per-site struct), shim. Tests: field
       access, `a__`, pattern without wildcards, unknown field is a compile error.
-- [ ] 2.6 trybuild: unbound RHS wildcard, guard naming an unknown wildcard, lone `_`,
+- [x] 2.6 trybuild: unbound RHS wildcard, guard naming an unknown wildcard, lone `_`,
       missing `=>`, guard with top-level comma without parentheses.
-- [ ] 2.7 Docs for `rule!`/`find!` (README section + macro docs), including the
+- [x] 2.7 Docs for `rule!`/`find!` (README section + macro docs), including the
       parenthesised-guard rule and the Phase-2 fallback limitation if taken.
 
 ## 3. `solve!`
 
-- [ ] 3.1 **Verify on docs.rs:** `wrt` element type (`Symbol` vs `Atom`); default domain when
+- [x] 3.1 **Verify on docs.rs:** `wrt` element type (`Symbol` vs `Atom`); default domain when
       `.over` is omitted; `Solution` per-variable accessor; `as_point_dict` key type
       (`PolyVariable` from `Symbol`).
 - [ ] 3.2 `parse/solve.rs`: `[eq, …]` list, `lhs == rhs` required, `for vars`, optional

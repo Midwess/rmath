@@ -1,0 +1,7 @@
+error: `_` is not a valid name
+
+       help: wildcards need a prefix, like `a_`, and are only meaningful in `rule!` and `find!` patterns
+ --> tests/ui/pattern_lone_underscore.rs:5:21
+  |
+5 |     let _ = rule!(f(_) => 0);
+  |                     ^
