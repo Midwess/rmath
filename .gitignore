@@ -1,0 +1,6 @@
+/target
+.DS_Store
+
+# Local Symbolica clone: source-available license forbids redistribution (see .dev/adr/0001).
+.dev/symbolica/
+.dev/test
