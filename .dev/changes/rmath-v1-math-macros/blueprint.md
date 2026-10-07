@@ -232,6 +232,8 @@ Verified on docs.rs/symbolica 3.0.1 during planning (2026-10-07):
 | 2.1: `MatchStackFn` = blanket impl for `Clone + Send + Sync + Fn(&MatchStack<'_>) -> ConditionResult`; return `Inconclusive` until all needed wildcards are bound. `ConditionResult::{True, False, Inconclusive}`, `From<bool>` | ✅ (primary guard design confirmed; no fallback needed) |
 | 2.1: `Condition<T>: From<T>` (→ `Yield`), `From<(Symbol, WildcardRestriction)>`, `&`/`\|`/`!` operators; `PatternAtomTreeIterator: Iterator<Item = HashMap<Symbol, Atom>>`; `BorrowReplacement` for `Replacement` and `&Replacement` (so `replace_multiple(&[Replacement])` works) | ✅ |
 
+| 3.1: `SolveBuilder::wrt<V: AtomCore>(&self, &[V])` (pass `&[Atom]`), `.over(SolveDomain)` default `Complexes`; `Solution::{get(&PolyVariable) -> Option<&Atom>, coordinates() -> &[(PolyVariable, Atom)], free_variables(), conditions(), is_point(), as_point_dict()}`; `PolyVariable::{Symbol, Function, Power}`, `From<Symbol>`, `to_atom()` | ✅ |
+
 Still to verify: conflicting re-declaration behaviour (undocumented → empirical test, deferred) ·
 `MatchStackFn` signature and binding access · `Match` → `Atom` for `a__`/`a___` ·
 `PatternAtomTreeIterator::Item` · `wrt` element type · `Solution` accessors · user-defined

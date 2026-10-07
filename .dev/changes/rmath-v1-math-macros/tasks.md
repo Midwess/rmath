@@ -1,6 +1,6 @@
 # Tasks: rmath-v1-math-macros
 
-## Progress: [20/35]
+## Progress: [21/35]
 
 Every "verify" task records its result in the API Verification Log in `blueprint.md` before
 dependent tasks start. All Symbolica facts come from docs.rs only (ADR-0001).
@@ -72,7 +72,7 @@ dependent tasks start. All Symbolica facts come from docs.rs only (ADR-0001).
 - [x] 3.1 **Verify on docs.rs:** `wrt` element type (`Symbol` vs `Atom`); default domain when
       `.over` is omitted; `Solution` per-variable accessor; `as_point_dict` key type
       (`PolyVariable` from `Symbol`).
-- [ ] 3.2 `parse/solve.rs`: `[eq, …]` list, `lhs == rhs` required, `for vars`, optional
+- [x] 3.2 `parse/solve.rs`: `[eq, …]` list, `lhs == rhs` required, `for vars`, optional
       `over Domain` (Complexes/Reals/Rationals/Integers). Unit tests incl. `=` vs `==`.
 - [ ] 3.3 `src/solve.rs` + `expand/solve.rs` + shim: each equation lowered to `sub(lhs, rhs)`;
       domain emitted as `SolveDomain::#ident` at the user's span.
