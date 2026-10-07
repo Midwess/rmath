@@ -195,15 +195,26 @@ pub enum Expr {
 
 ## API Changes
 
-Public surface of `rmath` after v1:
+Public surface of `rmath` as shipped in v1 (owner review, task 5.4):
 
 - Macros: `expr!`, `symbols!`, `rule!`, `find!`, `solve!`, `func!` (`macro_rules!` shims)
 - `pub use symbolica;`
-- `prelude::*`: the macros, `Atom`, `AtomCore`, `Symbol`, built-ins, `ApplyRule`, `Rule`
-- Traits: `IntoExpr`, `Callable<N>`, `ApplyRule`
-- Types: `Rule`, built-in markers (`Sin`, `Cos`, …), `I`
-- `#[doc(hidden)] pub mod __private` (unstable, macro use only; re-exports the proc macros and
-  `symbolica::symbol!`)
+- `prelude::*`: the six macros, `Atom`, `AtomCore`, `Symbol`, built-ins (`sin cos exp log sqrt
+  abs`, `I`), `IntoExpr`, `Callable`, `ApplyRule`, `Rule`, `SolutionExt`
+- Traits: `IntoExpr` (`to_expr(&self)`), `Callable<const N>` (method `invoke`, not `call`:
+  Symbolica's `Symbol` has an inherent `call`), `ApplyRule` (`apply(&self, &Rule)`),
+  `SolutionExt` (`value(&self, Symbol) -> Option<&Atom>`; added during implementation)
+- Types: `Rule`, built-in markers (`Sin`, `Cos`, `Exp`, `Log`, `Sqrt`, `Abs`), `I`
+- `#[doc(hidden)] pub mod __private` (unstable, macro use only)
+
+Behavioural notes a reviewer should know:
+- `rule!` guards bind wildcards as owned `Atom`s (not `&Atom`), so `a_ != expr!(1)` works.
+- `func!` parameters must be `Symbol`s (checked at compile time via `__private::param`); the
+  closure is `FnMut` and returns `f64`; `func!` returns `Result<_, EvaluationError>`.
+- `solve!` passes Symbolica's `Result` through; inexact (`f64`) coefficients yield
+  `Err(SolveError::UnsupportedProblem(..))`.
+- `find!` collects matches eagerly and returns `impl Iterator` over a hygienic per-site struct.
+- Tests must run single-threaded without a Symbolica license (`.cargo/config.toml`).
 
 ## Security Considerations
 

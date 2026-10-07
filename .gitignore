@@ -4,3 +4,7 @@
 # Local Symbolica clone: source-available license forbids redistribution (see .dev/adr/0001).
 .dev/symbolica/
 .dev/test
+
+# CI fixture crates resolve their own dependencies; keep their lockfiles and build dirs out.
+tests/fixtures/*/Cargo.lock
+tests/fixtures/*/target/
