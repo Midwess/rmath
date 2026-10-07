@@ -4,4 +4,5 @@
 //! `pow` or `call` are never shadowed, and never names `::symbolica` directly.
 
 pub mod expr;
+pub mod rule;
 pub mod symbols;

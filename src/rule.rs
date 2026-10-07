@@ -38,7 +38,7 @@ impl<T: AtomCore<Output = Atom>> ApplyRule for T {
 /// matcher keeps assigning instead of rejecting the partial match.
 pub fn guard<const N: usize>(
     wildcards: [Symbol; N],
-    pred: impl Fn([&Atom; N]) -> bool + Clone + Send + Sync + 'static,
+    pred: impl Fn([Atom; N]) -> bool + Clone + Send + Sync + 'static,
 ) -> Condition<PatternRestriction> {
     let check = move |stack: &MatchStack<'_>| -> ConditionResult {
         let mut bound = Vec::with_capacity(N);
@@ -48,8 +48,10 @@ pub fn guard<const N: usize>(
                 None => return ConditionResult::Inconclusive,
             }
         }
-        let refs: [&Atom; N] = std::array::from_fn(|i| &bound[i]);
-        pred(refs).into()
+        let atoms: [Atom; N] = bound
+            .try_into()
+            .unwrap_or_else(|_| unreachable!("one atom per wildcard"));
+        pred(atoms).into()
     };
     Condition::from(PatternRestriction::MatchStack(Box::new(check)))
 }
@@ -108,7 +110,7 @@ mod tests {
                 function!(f, Atom::var(a_)).to_pattern(),
                 function!(g, Atom::var(a_)).to_pattern(),
             )
-            .when(guard([a_], |[a]| *a != Atom::num(1))),
+            .when(guard([a_], |[a]| a != Atom::num(1))),
         ]);
 
         let e = function!(f, Atom::num(1)) + function!(f, Atom::num(2));

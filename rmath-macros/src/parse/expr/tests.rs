@@ -154,9 +154,16 @@ fn pattern(src: &str) -> String {
 
 #[test]
 fn trailing_underscores_denote_wildcards_only_in_pattern_mode() {
-    assert_eq!(pattern("f(a_, b__, c___)"), "(call f (wc a_) (wc b__) (wc c___))");
+    assert_eq!(
+        pattern("f(a_, b__, c___)"),
+        "(call f (wc a_) (wc b__) (wc c___))"
+    );
     assert_eq!(pattern("x_ + 1"), "(+ (wc x_) 1)");
-    assert_eq!(parse("a_ + 1"), "(+ a_ 1)", "in expr mode `a_` is an ordinary Rust name");
+    assert_eq!(
+        parse("a_ + 1"),
+        "(+ a_ 1)",
+        "in expr mode `a_` is an ordinary Rust name"
+    );
 }
 
 #[test]

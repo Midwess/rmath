@@ -19,12 +19,12 @@ pub struct RuleArm {
     pub wildcards: Vec<Ident>,
 }
 
-/// Parse a single arm or a `{ arm, arm, .. }` block, reporting every arm's error at once.
+/// Parse one or more arms, reporting every arm's error at once.
+///
+/// `rule! { a => b, c => d }` delivers `a => b, c => d` (the braces are the invocation's own
+/// delimiters), while `rule!({ a => b })` delivers a brace group; both forms are accepted.
 pub fn parse_rules(body: TokenStream) -> Result<Vec<RuleArm>, Errors> {
-    let arms_tokens = match single_brace_block(&body) {
-        Some(inner) => split_arms(inner),
-        None => vec![body],
-    };
+    let arms_tokens = split_arms(single_brace_block(&body).unwrap_or(body));
     let mut errors = Errors::default();
     let mut arms = Vec::new();
     for tokens in arms_tokens {
@@ -44,9 +44,7 @@ pub fn parse_rules(body: TokenStream) -> Result<Vec<RuleArm>, Errors> {
 fn single_brace_block(body: &TokenStream) -> Option<TokenStream> {
     let mut iter = body.clone().into_iter();
     match (iter.next(), iter.next()) {
-        (Some(TokenTree::Group(g)), None) if g.delimiter() == Delimiter::Brace => {
-            Some(g.stream())
-        }
+        (Some(TokenTree::Group(g)), None) if g.delimiter() == Delimiter::Brace => Some(g.stream()),
         _ => None,
     }
 }
@@ -59,7 +57,10 @@ fn split_arms(inner: TokenStream) -> Vec<TokenStream> {
             Some(TokenTree::Ident(id)) if id == "if");
         match arms.last_mut() {
             Some(prev) if starts_with_if => {
-                prev.extend(std::iter::once(TokenTree::Punct(Punct::new(',', Spacing::Alone))));
+                prev.extend(std::iter::once(TokenTree::Punct(Punct::new(
+                    ',',
+                    Spacing::Alone,
+                ))));
                 prev.extend(piece);
             }
             _ => arms.push(piece),
@@ -71,7 +72,10 @@ fn split_arms(inner: TokenStream) -> Vec<TokenStream> {
 fn parse_arm(tokens: TokenStream) -> Result<RuleArm, Error> {
     let mut c = Cursor::new(tokens);
     if c.peek().is_none() {
-        return Err(Error::new(Span::call_site(), "expected a rule `lhs => rhs`"));
+        return Err(Error::new(
+            Span::call_site(),
+            "expected a rule `lhs => rhs`",
+        ));
     }
     let lhs = parse_expr(&mut c, Mode::Pattern)?;
     if !c.peek_op("=>") {
@@ -240,6 +244,14 @@ mod tests {
     }
 
     #[test]
+    fn arms_arrive_without_braces_when_the_macro_itself_uses_braces() {
+        // `rule! { f(a_) => a_, g(a_) => 2 * a_, }` hands the expander the inner tokens only.
+        let arms = parse_rules(ts("f(a_) => a_, g(a_) => 2 * a_,")).unwrap();
+        assert_eq!(arms.len(), 2);
+        assert_eq!(arms[1].rhs.to_string(), "(* 2 (wc a_))");
+    }
+
+    #[test]
     fn a_missing_arrow_is_reported_with_the_rule_shape() {
         let msg = error("f(a_) + 1");
         assert!(msg.contains("expected `=>`"), "{msg}");
@@ -249,9 +261,15 @@ mod tests {
     #[test]
     fn wildcards_used_on_the_right_must_be_bound_on_the_left() {
         let msg = error("f(a_) => b_");
-        assert!(msg.contains("wildcard `b_` does not appear on the left-hand side"), "{msg}");
+        assert!(
+            msg.contains("wildcard `b_` does not appear on the left-hand side"),
+            "{msg}"
+        );
 
         let msg = error("f(a_) => a_, if b_ != 0");
-        assert!(msg.contains("wildcard `b_` is not bound by the pattern"), "{msg}");
+        assert!(
+            msg.contains("wildcard `b_` is not bound by the pattern"),
+            "{msg}"
+        );
     }
 }

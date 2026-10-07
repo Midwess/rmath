@@ -1,15 +1,13 @@
 //! Helpers called by macro expansions. Not part of the public API: anything here may change
 //! in a patch release.
 
-use symbolica::{
-    atom::{Atom, AtomCore},
-    domains::integer::Integer,
-};
+use symbolica::{atom::AtomCore, domains::integer::Integer, id::Pattern};
 
 use crate::{Callable, IntoExpr};
 
-pub use rmath_macros::{__expr, __symbols};
-pub use symbolica::symbol;
+pub use crate::rule::{Rule, find_all, guard};
+pub use rmath_macros::{__expr, __rule, __symbols};
+pub use symbolica::{atom::Atom, id::Replacement, symbol};
 
 pub fn into_expr<T: IntoExpr + ?Sized>(value: &T) -> Atom {
     value.to_expr()
@@ -57,6 +55,11 @@ pub fn factorial(value: Atom) -> Atom {
         return Atom::num(Integer::factorial(n));
     }
     (value + 1).gamma()
+}
+
+/// Convert an expression into a pattern without needing `AtomCore` in the caller's scope.
+pub fn pattern(expr: Atom) -> Pattern {
+    expr.to_pattern()
 }
 
 #[cfg(test)]
