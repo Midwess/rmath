@@ -130,3 +130,8 @@ Implementation notes, timings and verification results are appended here during 
   `θ`; README should mention `#![allow(mixed_script_confusables)]` for single-letter symbols.
 - **1.9** `#[diagnostic::on_unimplemented]` renders `{N}` as `_` when the arity cannot be
   inferred (e.g. calling a plain `fn` item inside `expr!`); 1.11 must check a concrete arity.
+- **1.12 (partial)** README written and included as crate docs (`#![doc = include_str!]`,
+  3 doctested blocks). `cargo package --list` ships only `src/`, manifests, README: nothing
+  under `.dev/`. Still needed from the owner: confirm MIT OR Apache-2.0 (then add
+  `LICENSE-MIT`/`LICENSE-APACHE`), copy `LICENSE-SYMBOLICA.md` from the official source, and a
+  `repository` URL for `Cargo.toml`.

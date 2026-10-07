@@ -223,6 +223,7 @@ Verified on docs.rs/symbolica 3.0.1 during planning (2026-10-07):
 
 | `Integer::factorial(n: u32) -> Integer`, `Integer::binom(n: i64, k: i64)`, `Integer::multinom(&[u32])`; `Integer: Into<Coefficient>`, `to_i64() -> Option<i64>` | ✅ |
 | `TranscendentalFunctions::gamma(&self) -> Self::Output`, implemented for every `AtomCore`; no factorial/binomial on the trait → symbolic `n!` lowers to `(n + 1).gamma()` | ✅ |
+| 1.11: `#[diagnostic::on_unimplemented]` renders `{N}` concretely ("`Sin` cannot be called with 2 argument(s)") only when the arity is fixed by the call site; calls are therefore lowered as `call::<_, N>(..)`. Without the turbofish rustc infers `N` from the single impl and reports an array-size mismatch instead. | ✅ |
 | Found while compiling 1.7: `Symbol` has an inherent `call<A: FunctionArguments>(…)` method. Inherent methods shadow trait methods, so rmath's dispatch trait method is named `Callable::invoke`, not `call`. | ✅ (design adjusted) |
 
 | Empirical (1.9): `symbol!` invoked through `$crate::__private::symbol!` inside the `symbols!` shim lands in the **user's** namespace: `symbols!(x); expr!(x) == parse!("x")` holds in an integration test | ✅ |
