@@ -178,7 +178,7 @@ fn unbound_wildcard_in_guard(tokens: TokenStream, bound: &[Ident]) -> Option<Ide
 }
 
 /// Wildcards in first-appearance order; a function head like `f_(x)` is a wildcard too.
-fn collect_wildcards(expr: &Expr, out: &mut Vec<Ident>) {
+pub(crate) fn collect_wildcards(expr: &Expr, out: &mut Vec<Ident>) {
     let mut push = |id: &Ident| {
         if !out.iter().any(|w| w == id) {
             out.push(id.clone());

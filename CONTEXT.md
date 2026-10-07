@@ -18,7 +18,7 @@ Architecture decisions that explain *why* these terms are shaped this way live i
 | **Wildcard** | A pattern variable in `rule!` / `find!`, declared implicitly by a trailing underscore. `a_` matches one argument, `a__` one or more, `a___` zero or more. Not a symbol the user must declare. |
 | **Rule** | The `rmath::Rule` type: one or more rewrites `lhs => rhs` (optionally `, if guard`) produced by `rule!`; wraps Symbolica `Replacement`s. Applied with `.apply(&rule)` from the `ApplyRule` trait. |
 | **Rule set** | A `Rule` holding several rewrites, written `rule! { … }` like `match` arms and applied in one simultaneous pass. Not a separate type. |
-| **Guard** | The `if cond` clause of a rule: a Rust `bool` expression over the rule's wildcards (bound as `&Atom`). Guards with a top-level comma must be parenthesised. |
+| **Guard** | The `if cond` clause of a rule: a Rust `bool` expression over the rule's wildcards, each bound to its matched `Atom` (owned, so `a_ != expr!(1)` just works). Guards with a top-level comma must be parenthesised. |
 | **Equation** | `lhs == rhs` inside `solve!`. Lowered to `lhs - rhs` for Symbolica's solver. |
 | **Compiled function** | The closure returned by `func!(\|params\| body)`: a Symbolica evaluator wrapped so it is called like `f(1.0, 2.0)`. Captured splices are frozen at creation time. |
 | **Expansion** | What a macro emits: Rust code calling `$crate::__private::*` helpers (full paths, crate root forwarded by a `macro_rules!` shim) which in turn call Symbolica's public API. Never a string parsed at runtime, never a `::symbolica::` path. |

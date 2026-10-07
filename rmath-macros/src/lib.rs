@@ -71,3 +71,9 @@ pub fn __symbols(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
 pub fn __rule(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
     run(input, expand::rule::expand)
 }
+
+#[doc(hidden)]
+#[proc_macro]
+pub fn __find(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
+    run(input, expand::find::expand)
+}

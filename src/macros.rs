@@ -62,3 +62,27 @@ macro_rules! rule {
         $crate::__private::__rule! { $crate ; $($t)* }
     };
 }
+
+/// Find every match of a pattern and get the wildcards back as named fields.
+///
+/// ```
+/// use rmath::prelude::*;
+///
+/// symbols!(f, x, y);
+/// let e = expr!(f(1, 2) + f(x, y));
+/// let mut pairs: Vec<String> = find!(e, f(a_, b_))
+///     .map(|m| format!("{} {}", m.a_, m.b_))
+///     .collect();
+/// pairs.sort();
+/// assert_eq!(pairs, ["1 2", "x y"]);
+/// ```
+///
+/// `find!(expression, pattern)` returns an iterator; each item has one `Atom` field per
+/// wildcard of the pattern, named exactly like the wildcard, so a typo in a field name is a
+/// compile error. Matches are collected eagerly.
+#[macro_export]
+macro_rules! find {
+    ($($t:tt)*) => {
+        $crate::__private::__find! { $crate ; $($t)* }
+    };
+}
