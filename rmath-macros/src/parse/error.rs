@@ -68,6 +68,12 @@ impl Error {
 #[derive(Debug, Default)]
 pub struct Errors(Vec<Error>);
 
+impl From<Error> for Errors {
+    fn from(err: Error) -> Self {
+        Errors(vec![err])
+    }
+}
+
 impl Errors {
     pub fn push(&mut self, err: Error) {
         self.0.push(err);

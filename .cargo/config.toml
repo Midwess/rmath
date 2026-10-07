@@ -1,0 +1,5 @@
+# Symbolica without a runtime license key runs on a single core and aborts the process when
+# it is used from several threads at once. Test binaries therefore run single-threaded.
+# With a license key you may remove this (see README "Licensing").
+[env]
+RUST_TEST_THREADS = "1"

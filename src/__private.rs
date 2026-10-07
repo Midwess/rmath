@@ -8,6 +8,8 @@ use symbolica::{
 
 use crate::{Callable, IntoExpr};
 
+pub use rmath_macros::__expr;
+
 pub fn into_expr<T: IntoExpr + ?Sized>(value: &T) -> Atom {
     value.to_expr()
 }

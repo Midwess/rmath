@@ -1,6 +1,6 @@
 # Tasks: rmath-v1-math-macros
 
-## Progress: [7/35]
+## Progress: [8/35]
 
 Every "verify" task records its result in the API Verification Log in `blueprint.md` before
 dependent tasks start. All Symbolica facts come from docs.rs only (ADR-0001).
@@ -30,7 +30,7 @@ dependent tasks start. All Symbolica facts come from docs.rs only (ADR-0001).
 - [x] 1.7 Runtime: `into_expr.rs` (`IntoExpr` + impls), `call.rs` (`Callable<N>`, impl for
       `Symbol`), `prelude.rs` (built-in markers + consts, `I`), `__private.rs` helpers. Unit
       tests; confirm `#[diagnostic::on_unimplemented]` renders `{N}`.
-- [ ] 1.8 `expand/expr.rs` lowering + `__expr` entry + `expr!` shim in `src/macros.rs`.
+- [x] 1.8 `expand/expr.rs` lowering + `__expr` entry + `expr!` shim in `src/macros.rs`.
       Smoke test: `expr!(x^2 + 1) == parse!("x^2+1")`.
 - [ ] 1.9 `symbols!`: `parse/symbols.rs`, `expand/symbols.rs`, shim. Tests: bindings visible
       after the macro (proves shim hygiene), attributes applied, `τ`, `r#type`, display name
@@ -119,3 +119,9 @@ Implementation notes, timings and verification results are appended here during 
   has no `rug` and resolves `malachite-nz`. Full default build passed locally (Rust 1.97,
   Homebrew GMP/MPFR). A full *compile* with `pure-rust` is deferred to CI (task 5.1).
 - **1.2** `rtk` filters cargo output; use `rtk proxy cargo …` when exact output matters.
+- **1.7/1.8** Symbolica's unlicensed mode is single-core and **aborts the process (SIGABRT)**
+  when used from two threads at once (reproduced with `--test-threads=2`; one thread passes).
+  Fix: `.cargo/config.toml` sets `RUST_TEST_THREADS = "1"` for the workspace. README (1.12)
+  must tell users the same for their own test suites, and CI (5.1) inherits the config.
+- **1.7** `Symbol` has an inherent `call(...)` in Symbolica, so rmath's dispatch method is
+  `Callable::invoke`. Symbolic `n!` lowers to `(n + 1).gamma()`; integer `n!` is exact.

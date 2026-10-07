@@ -110,6 +110,11 @@ Symbolica is **source-available, not open source** ("Symbolica Source-Available 
 - The MIT-licensed sub-crates `numerica` and `graphica` may be studied and reused, keeping
   the MIT notice.
 
+### Testing against Symbolica without a license key
+Unlicensed Symbolica runs on one core and aborts (SIGABRT) when called from several threads
+concurrently. `.cargo/config.toml` therefore sets `RUST_TEST_THREADS = "1"`; never remove it
+without a license key. Prefer `rtk proxy cargo test …` when you need the full test output.
+
 ### Version control
 - `.dev` is currently fully gitignored. To share specs, ignore only `.dev/symbolica/` instead.
   The Symbolica clone must never be committed or pushed, since publishing its source is

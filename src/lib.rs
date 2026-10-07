@@ -8,6 +8,7 @@
 pub mod __private;
 mod call;
 mod into_expr;
+mod macros;
 pub mod prelude;
 
 pub use call::Callable;
